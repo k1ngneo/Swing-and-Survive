@@ -35,6 +35,7 @@ class SceneWidget(Widget):
     
     def on_size(self, *args):
         self.background.size = Window.size
+        self.camera.update()
     
     
     def add_ball(self, new_ball):
