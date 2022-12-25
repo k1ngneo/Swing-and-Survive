@@ -22,12 +22,20 @@ class SceneWidget(Widget):
         Clock.schedule_interval(self.update, 1.0 / 60.0)
         
         self.camera = Camera()
-        ball_pos = Vec2D(-2.5, 0.0)
-        ball_pos = self.camera.worldToClip(ball_pos)
         
+        # ball creation
+        # --------------------
+        
+        # setting ball's world position and radius
+        ball_pos = Vec2D(-2.5, 0.0)
+        ball_rad = 1.0
+        
+        # creating widget for rendering
         self.mainBall = BallWidget()
-        self.mainBall.pos = ball_pos.t()
-        self.mainBall.radius = 0.05
+        # converting world-space position to clip-space position
+        self.mainBall.pos = self.camera.worldToClip(ball_pos).t()
+        # scaling radius from world-space to clip-space
+        self.mainBall.radius = ball_rad / self.camera.size
         self.mainBall.color = (0.1, 0.1, 0.1, 1.0)
         
         self.add_ball(self.mainBall)
