@@ -4,6 +4,8 @@ from kivy.graphics import *
 from kivy.metrics import *
 from kivy.properties import Clock
 
+from camera import Camera
+from vector import Vec2D
 from ballwidget import BallWidget
 
 
@@ -19,8 +21,12 @@ class SceneWidget(Widget):
         
         Clock.schedule_interval(self.update, 1.0 / 60.0)
         
+        self.camera = Camera()
+        ball_pos = Vec2D(-2.5, 0.0)
+        ball_pos = self.camera.worldToClip(ball_pos)
+        
         self.mainBall = BallWidget()
-        self.mainBall.pos = (0.5, 0.5)
+        self.mainBall.pos = ball_pos.t()
         self.mainBall.radius = 0.05
         self.mainBall.color = (0.1, 0.1, 0.1, 1.0)
         

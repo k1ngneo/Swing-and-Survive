@@ -14,6 +14,7 @@ class BallWidget(Widget):
         with self.canvas:
             self.ellipse = Ellipse(pos=(0.0, 0.0), size=(0.0, 0.0))
     
+    
     def setPosition(self, newPos):
         self.pos = newPos
         self.update()

@@ -7,22 +7,23 @@ class Vec2D:
 		self.y = y
 	
 	
-	def __add__(self, other: Vec2D) -> Vec2D:
+	def __add__(self, other):
 		return Vec2D(self.x + other.x, self.y + other.y)
 	
 	
-	def __sub__(self, other: Vec2D) -> Vec2D:
+	def __sub__(self, other):
 		return Vec2D(self.x - other.x, self.y - other.y)
 	
 	
-	def __mul__(self, other) -> Vec2D:
+	def __mul__(self, other):
 		if isinstance(other, self.__class__):
 			return Vec2D(self.x * other.x, self.y * other.y)
 		elif isinstance(other, float) or isinstance(other, int):
 			return Vec2D(other * self.x, other * self.y)
 	
+	__rmul__ = __mul__
 	
-	def __div__(self, other: Vec2D) -> Vec2D:
+	def __truediv__(self, other):
 		return Vec2D(self.x / other.x, self.y / other.y)
 	
 	
