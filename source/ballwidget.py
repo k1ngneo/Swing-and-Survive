@@ -7,7 +7,7 @@ class BallWidget(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
-        self.pos = (0.5, 0.5)
+        self.__pos = (0.5, 0.5)
         self.radius = 0.05
         self.color = (0.1, 0.1, 0.1, 1.0)
         
@@ -15,9 +15,12 @@ class BallWidget(Widget):
             self.ellipse = Ellipse(pos=(0.0, 0.0), size=(0.0, 0.0))
     
     
-    def setPosition(self, newPos):
-        self.pos = newPos
+    def set_pos(self, new_pos):
+        self.pos = new_pos
         self.update()
+    
+    def get_pos(self):
+        return self.__pos
         
     
     def update(self):
