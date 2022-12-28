@@ -19,8 +19,9 @@ class BallWidget(Widget):
         self.pos = new_pos
         self.update()
     
+    
     def get_pos(self):
-        return self.__pos
+        return self.pos
         
     
     def update(self):
