@@ -16,12 +16,12 @@ class BallWidget(Widget):
     
     
     def set_pos(self, new_pos):
-        self.pos = new_pos
+        self.__pos = new_pos
         self.update()
     
     
     def get_pos(self):
-        return self.pos
+        return self.__pos
         
     
     def update(self):
