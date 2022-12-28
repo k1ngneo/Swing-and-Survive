@@ -66,7 +66,7 @@ class SceneWidget(Widget):
     
     def update(self, dt):
         self.__time_passed += dt
-        self.mouth.pos = Vec2D(0.25 * math.sin(self.__time_passed), self.mouth.pos.y)
+        self.mouth.body.pos = Vec2D(0.25 * math.sin(self.__time_passed), self.mouth.body.pos.y)
         
         for ball in self.__balls:
             ball.update()
