@@ -1,1 +1,51 @@
-SceneWidget:
+GameScreen:
+
+<GameScreen>:
+
+<HoverButton>:
+    size_hint: .4, .09
+    font_size: "18sp"
+    background_color: 1, 1, 1, 0
+    color: 0, 0, 0, 1
+    canvas.before:
+        Color:
+            rgb: self.background
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [30]
+
+
+<MenuScreen>:
+    canvas.before:
+        Color:
+            rgba: self.bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        Label:
+            pos_hint: {'center_y': 0.75, 'center_x': 0.5}
+            text: "BALL CRUSH"
+            color: 0, 0, 0, 1
+            font_size: "40sp"
+        HoverButton:
+            pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+            text: 'Play Game'
+            on_press: root.manager.current = 'game'
+        HoverButton:
+            pos_hint: {'center_y': 0.4, 'center_x': 0.5}
+            text: 'Settings'
+            on_press: root.manager.current = 'settings'
+        HoverButton:
+            pos_hint: {'center_y': 0.3, 'center_x': 0.5}
+            text: 'Quit'
+            on_press: app.stop()
+
+<SettingsScreen>:
+    BoxLayout:
+        HoverButton:
+            text: 'My settings button'
+        HoverButton:
+            text: 'Back to menu'
+            on_press: root.manager.current = 'menu'
