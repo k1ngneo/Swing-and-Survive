@@ -1,14 +1,11 @@
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.graphics import *
-from kivy.metrics import *
 from kivy.properties import Clock
 
 from camera import Camera
 from vector import Vec2D
 from ball import Ball
-
-import math
 
 class SceneWidget(Widget):
     
@@ -56,11 +53,13 @@ class SceneWidget(Widget):
         camera = SceneWidget.main_camera
         ball = self.__main_ball.body
 
+        # calculating change of touch position between frames
         delta_x = (touch.spos[0] - self.__last_touch[0]) * camera.size
         delta_y = (touch.spos[1] - self.__last_touch[1]) * camera.size
         delta_y = delta_y * camera.hw_ratio
         new_pos = ball.pos + Vec2D(delta_x, delta_y)
 
+        # limiting ball's position with camera's borders
         if new_pos.x + ball.rad > camera.pos.x + 0.5 * camera.size:
             new_pos.x = camera.pos.x + 0.5 * camera.size - ball.rad
         elif new_pos.x - ball.rad < camera.pos.x - 0.5 * camera.size:
