@@ -1,5 +1,5 @@
 from vector import Vec2D
-from ballwidget import BallWidget
+from ball_widget import BallWidget
 
 import math
 
@@ -20,7 +20,7 @@ class Ball:
         self.update()
 
     def update(self):
-        from gamescreen import GameScreen as gs
+        from game_screen import GameScreen as gs
         self.__widget.pos = gs.main_camera.world_to_clip(self.body.pos).t()
         self.__widget.radius = self.body.rad / gs.main_camera.size
         self.__widget.update()

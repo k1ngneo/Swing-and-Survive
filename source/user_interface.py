@@ -1,7 +1,6 @@
 from kivy.animation import Animation
-from kivy.properties import ListProperty, ObjectProperty, Clock
+from kivy.properties import ListProperty, Clock
 from kivy.uix.button import Button
-from kivy.uix.screenmanager import Screen
 from kivymd.uix.behaviors import HoverBehavior
 
 
@@ -17,14 +16,13 @@ class HoverButton(Button, HoverBehavior):
         Animation(size_hint=(.4, .09), d=.1).start(self)
 
 
-class MenuScreen(Screen):
-    bg_color = ObjectProperty([.4, .4, .4, 1])
+class TapButton(Button):
 
     def __init__(self, **kwargs):
-        super(MenuScreen, self).__init__(**kwargs)
-        Clock.schedule_once(self.start_pulsing, 2)
+        super(TapButton, self).__init__(**kwargs)
+        Clock.schedule_once(self.start_pulsing, .5)
 
     def start_pulsing(self, *args):
-        anim = Animation(bg_color=[.5, .5, .5, 1]) + Animation(bg_color=[.4, .4, .4, 1])
+        anim = Animation(font_size=16.0, d=.999) + Animation(font_size=25.0, d=.999)
         anim.repeat = True
         anim.start(self)

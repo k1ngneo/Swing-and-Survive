@@ -1,14 +1,22 @@
 __version__ = "0.1"
 
 from kivy.app import App
-from kivy.uix.screenmanager import FadeTransition
+from kivy.uix.screenmanager import FadeTransition, Screen
 from kivy.uix.screenmanager import ScreenManager
+from kivy.config import Config
+from game_screen import GameScreen
+from user_interface import *
 
-from gamescreen import GameScreen
-from userinterface import *
+Config.set('graphics', 'width', '300')
+Config.set('graphics', 'height', '550')
+Config.write()
 
 
 class SettingsScreen(Screen):
+    pass
+
+
+class MenuScreen(Screen):
     pass
 
 
