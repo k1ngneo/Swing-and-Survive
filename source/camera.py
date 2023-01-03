@@ -28,7 +28,7 @@ from vector import Vec2D
 
 
 class Camera:
-    def __init__(self, pos = Vec2D(0.0, 0.0), size = 10.0):
+    def __init__(self, pos=Vec2D(0.0, 0.0), size=10.0):
         self.pos = pos
         self.size = size
         self.hw_ratio = Window.size[1] / Window.size[0]
@@ -39,7 +39,6 @@ class Camera:
         vertex = vertex - (self.pos - 0.5 * cam_size)
         vertex = vertex / cam_size
         return vertex
-    
-    
+
     def update(self):
         self.hw_ratio = Window.size[1] / Window.size[0]
