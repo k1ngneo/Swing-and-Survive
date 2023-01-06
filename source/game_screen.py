@@ -3,15 +3,12 @@ from kivy.graphics import *
 from kivy.properties import Clock
 from kivy.uix.screenmanager import Screen
 
-import math
 
-from ball import Ball
 from camera import Camera
 from vector import Vec2D
 from ball import Ball
 from physics_engine import PhysicsEngine
 
-import math
 
 class GameScreen(Screen):
     main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
