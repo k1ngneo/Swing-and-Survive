@@ -6,11 +6,13 @@ import math
 class Ball:
     
     class Body:
-        def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0):
+        def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0, gravity=False):
             self.pos = position
             self.rad = radius
             self.vel = Vec2D(0.0, 0.0)
             self.mass = (4.0 / 3.0) * math.pi * (self.rad**3)
+
+            self.is_gravity_affected = gravity
         
     
     def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0):

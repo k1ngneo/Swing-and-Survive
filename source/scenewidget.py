@@ -29,29 +29,30 @@ class SceneWidget(Widget):
         
         new_ball = Ball(Vec2D(1.0, 1.0), 0.5)
         new_ball.set_color(0.1, 0.6, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.01, 0.0)
+        new_ball.body.vel = Vec2D(0.1, 0.0)
         self.add_ball(new_ball)
         new_ball = Ball(Vec2D(-1.0, 1.0), 0.5)
         new_ball.set_color(0.1, 0.6, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(-0.01, 0.0)
+        new_ball.body.vel = Vec2D(-0.1, 0.0)
         self.add_ball(new_ball)
         
         new_ball = Ball(Vec2D(0.0, 0.0), 1.0)
         new_ball.set_color(0.1, 0.7, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.0, 0.01)
+        new_ball.body.vel = Vec2D(0.0, 0.1)
         self.add_ball(new_ball)
         
         new_ball = Ball(Vec2D(-0.3, 0.2), 0.1)
         new_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(-0.01, 0.0)
+        new_ball.body.vel = Vec2D(-0.1, 0.0)
         self.add_ball(new_ball)
         new_ball = Ball(Vec2D(0.3, 0.2), 0.1)
         new_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.01, 0.0)
+        new_ball.body.vel = Vec2D(0.1, 0.0)
         self.add_ball(new_ball)
         
         self.mouth = Ball(Vec2D(0.0, -0.4), 0.2)
         self.mouth.set_color(0.5, 0.1, 0.1, 1.0)
+        self.mouth.body.is_gravity_affected = True
         self.add_ball(self.mouth)
     
     
@@ -75,7 +76,7 @@ class SceneWidget(Widget):
         self.__time_passed += dt
         self.mouth.body.pos = Vec2D(0.25 * math.sin(self.__time_passed), self.mouth.body.pos.y)
 
-        self.__physics_engine.advance_bodies(dt)
+        self.__physics_engine.update(dt)
 
         for ball in self.__balls:
             ball.update()
