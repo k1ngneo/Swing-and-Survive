@@ -1,16 +1,17 @@
 from kivy.core.window import Window
 from kivy.graphics import *
-from kivy.properties import Clock
+from kivy.properties import Clock, StringProperty
 from kivy.uix.screenmanager import Screen
 
-import math
-
-from ball import Ball
+import hostile_balls
 from camera import Camera
+from ball import Ball
 from vector import Vec2D
+
 
 class GameScreen(Screen):
     main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
+    name = StringProperty('game')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -23,32 +24,16 @@ class GameScreen(Screen):
             self.background = Rectangle(pos=(0, 0))
 
         Clock.schedule_interval(self.update, 1.0 / 60.0)
-        
+
         self.__main_ball = Ball(Vec2D(0.0, 0.0), 1.0)
         self.__main_ball.set_color(0.7, 0.4, 0.1, 1.0)
         self.add_ball(self.__main_ball)
-
-        new_ball = Ball(Vec2D(1.0, 1.0), 0.5)
-        new_ball.set_color(0.1, 0.6, 0.1, 1.0)
-        self.add_ball(new_ball)
-        new_ball = Ball(Vec2D(-1.0, 1.0), 0.5)
-        new_ball.set_color(0.1, 0.6, 0.1, 1.0)
-        self.add_ball(new_ball)
-
-        new_ball = Ball(Vec2D(0.0, 0.0), 1.0)
-        new_ball.set_color(0.1, 0.7, 0.1, 1.0)
-        self.add_ball(new_ball)
-
-        new_ball = Ball(Vec2D(-0.3, 0.2), 0.1)
-        new_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        self.add_ball(new_ball)
-        new_ball = Ball(Vec2D(0.3, 0.2), 0.1)
-        new_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        self.add_ball(new_ball)
-
-        self.mouth = Ball(Vec2D(0.0, -0.4), 0.2)
-        self.mouth.set_color(0.5, 0.1, 0.1, 1.0)
-        self.add_ball(self.mouth)
+        print('start of for')
+        hb = hostile_balls.HostileBalls(1)
+        for ball in hb.hostile_balls:
+            print("Ball's parent name:" + str(ball.get_widget().parent))
+            self.add_ball(ball)
+        print('end of for')
 
     def on_size(self, *args):
         self.background.size = Window.size
@@ -58,7 +43,7 @@ class GameScreen(Screen):
         widget = new_ball.get_widget()
         with self.canvas:
             Color(widget.color[0], widget.color[1], widget.color[2], widget.color[3])
-        
+
         self.add_widget(widget)
         self.__balls.append(new_ball)
 
@@ -70,7 +55,7 @@ class GameScreen(Screen):
         self.__last_touch = touch.spos
 
     def on_touch_move(self, touch):
-        camera = GameScreen.main_camera
+        camera = self.main_camera
         ball = self.__main_ball.body
 
         # calculating change of touch position between frames
