@@ -1,39 +1,33 @@
 from kivy.core.window import Window
 from kivy.graphics import *
-from kivy.properties import Clock, StringProperty
+from kivy.properties import Clock
+from functools import partial
 from kivy.uix.screenmanager import Screen
 
 import hostile_balls
-from camera import Camera
 from ball import Ball
+from camera import Camera
 from vector import Vec2D
 
 
 class GameScreen(Screen):
     main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
-    name = StringProperty('game')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
         self.__balls = []
         self.__last_touch = 0
-        
+
         with self.canvas:
             Color(0.1, 0.3, 0.3, 1)
             self.background = Rectangle(pos=(0, 0))
 
         Clock.schedule_interval(self.update, 1.0 / 60.0)
+        Clock.schedule_interval(partial(self.spawn_balls_over_time, 1), 5)
 
-        self.__main_ball = Ball(Vec2D(0.0, 0.0), 1.0)
-        self.__main_ball.set_color(0.7, 0.4, 0.1, 1.0)
+        self.__main_ball = Ball(Vec2D(0.0, 0.0), 0.5)
+        self.__main_ball.set_color(0.7, 0.4, 0.1, 1)
         self.add_ball(self.__main_ball)
-        print('start of for')
-        hb = hostile_balls.HostileBalls(1)
-        for ball in hb.hostile_balls:
-            print("Ball's parent name:" + str(ball.get_widget().parent))
-            self.add_ball(ball)
-        print('end of for')
 
     def on_size(self, *args):
         self.background.size = Window.size
@@ -50,6 +44,11 @@ class GameScreen(Screen):
     def update(self, dt):
         for ball in self.__balls:
             ball.update()
+
+    def spawn_balls_over_time(self, dt, amount):
+        hb = hostile_balls.HostileBalls(amount)
+        for ball in hb.hostile_balls:
+            self.add_ball(ball)
 
     def on_touch_down(self, touch):
         self.__last_touch = touch.spos
