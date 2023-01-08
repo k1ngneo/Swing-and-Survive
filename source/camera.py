@@ -23,7 +23,12 @@ from vector import Vec2D
        |                |
        |                |
        +----------------+
-  cam.pos-0.5*size    
+  cam.pos-0.5*size
+  
+  left_border = cam.pos.x - 0.5 * cam.size
+  right_border = cam.pos.x + 0.5 * cam.size
+  top_border = cam.pos.y + 0.5 * cam.size * cam.hw_ratio
+  bottom_border = cam.pos.y - 0.5 * cam.size * cam.hw_ratio    
 '''
 
 
