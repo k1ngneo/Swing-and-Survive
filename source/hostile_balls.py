@@ -20,11 +20,12 @@ class HostileBalls:
         from game_screen import GameScreen
         cam = GameScreen.main_camera
         for ball in self.hostile_balls:
-            side_choices = [-1, 1]
-            height_choice = random.uniform(cam.size * cam.hw_ratio * 0.5, -cam.size * cam.hw_ratio * 0.5)
-            x_side_choice = random.choice(side_choices)
-            y_side_choice = random.choice(side_choices)
-            ball.body.pos = Vec2D(cam.size * 0.5 * x_side_choice, height_choice * 0.5 * y_side_choice)
+            side_choice = [-1, 1]
+            random_x_side = random.choice(side_choice)
+            random_height = random.uniform(cam.pos.y - 0.5 * cam.size * cam.hw_ratio,
+                                           cam.pos.y + 0.5 * cam.size * cam.hw_ratio)
+            ball.body.pos = Vec2D(cam.pos.x + 0.5 * cam.size * random_x_side, random_height)
+            
 
     def set_velocity(self):
         for ball in self.hostile_balls:

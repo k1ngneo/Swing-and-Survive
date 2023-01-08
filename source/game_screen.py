@@ -1,6 +1,6 @@
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import *
-from kivy.properties import Clock
 from functools import partial
 from kivy.uix.screenmanager import Screen
 
@@ -23,7 +23,7 @@ class GameScreen(Screen):
             self.background = Rectangle(pos=(0, 0))
 
         Clock.schedule_interval(self.update, 1.0 / 60.0)
-        Clock.schedule_interval(partial(self.spawn_balls_over_time, 3), 2)
+        Clock.schedule_interval(partial(self.spawn_balls_over_time, 2), 2)
 
         self.__main_ball = Ball(Vec2D(0.0, 0.0), 0.5)
         self.__main_ball.set_color(0.7, 0.4, 0.1, 1)
@@ -45,7 +45,7 @@ class GameScreen(Screen):
         for ball in self.__balls:
             ball.update()
 
-    # made as in documentation '*largs'
+    # made as in kivy.Clock documentation
     def spawn_balls_over_time(self, amount, *largs):
         hb = hostile_balls.HostileBalls(amount)
         for ball in hb.hostile_balls:
