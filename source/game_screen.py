@@ -5,9 +5,10 @@ from functools import partial
 from kivy.uix.screenmanager import Screen
 
 import hostile_balls
-from ball import Ball
 from camera import Camera
 from vector import Vec2D
+from ball import Ball
+from physics_engine import PhysicsEngine
 
 
 class GameScreen(Screen):
@@ -15,6 +16,8 @@ class GameScreen(Screen):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.__physics_engine = PhysicsEngine()
         self.__balls = []
         self.__last_touch = 0
 
@@ -26,7 +29,7 @@ class GameScreen(Screen):
         Clock.schedule_interval(partial(self.spawn_balls_over_time, 2), 2)
 
         self.__main_ball = Ball(Vec2D(0.0, 0.0), 0.5)
-        self.__main_ball.set_color(0.7, 0.4, 0.1, 1)
+        self.__main_ball.set_color(0.7, 0.4, 0.1, 1.0)
         self.add_ball(self.__main_ball)
 
     def on_size(self, *args):
@@ -40,8 +43,10 @@ class GameScreen(Screen):
 
         self.add_widget(widget)
         self.__balls.append(new_ball)
+        self.__physics_engine.add_body(new_ball.body)
 
     def update(self, dt):
+        self.__physics_engine.update(dt)
         for ball in self.__balls:
             ball.update()
 
