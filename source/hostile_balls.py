@@ -7,10 +7,12 @@ import math
 
 class HostileBalls:
     spawn_radius = math.sqrt(game_screen.GameScreen.main_camera.size ** 2 + (
-                game_screen.GameScreen.main_camera.size * game_screen.GameScreen.main_camera.hw_ratio) ** 2) * 0.5 - 3
+                game_screen.GameScreen.main_camera.size * game_screen.GameScreen.main_camera.hw_ratio) ** 2) * 0.5 + 1
+    balls_speed = 3
 
     def __init__(self, amount):
         self.hostile_balls = []
+        self.cam = game_screen.GameScreen.main_camera
         i = 0
         while i < amount:
             new_ball = Ball(Vec2D(0, 0), .25)
@@ -22,11 +24,10 @@ class HostileBalls:
 
     def set_position(self):
         balls_to_remove = set()
-        cam = game_screen.GameScreen.main_camera
         for i in range(len(self.hostile_balls)):
             angle = random.uniform(0, 2 * math.pi)
-            self.hostile_balls[i].body.pos = Vec2D(math.cos(angle) * self.spawn_radius + cam.pos.x,
-                                                   math.sin(angle) * self.spawn_radius + cam.pos.y)
+            self.hostile_balls[i].body.pos = Vec2D(math.cos(angle) * self.spawn_radius + self.cam.pos.x,
+                                                   math.sin(angle) * self.spawn_radius + self.cam.pos.y)
             # detect balls spawned on top of each other
             for j in range(i):
                 len_between_vectors = self.hostile_balls[i].body.pos.dist(self.hostile_balls[j].body.pos)
@@ -45,4 +46,7 @@ class HostileBalls:
 
     def set_velocity(self):
         for ball in self.hostile_balls:
-            ball.body.vel = -1 * ball.body.pos
+            destination_height = random.uniform(self.cam.size * self.cam.hw_ratio * -0.25, self.cam.size * self.cam.hw_ratio * 0.25)
+            destination_pos = Vec2D(self.cam.pos.x, destination_height)
+            ball.body.vel = Vec2D(destination_pos.x - ball.body.pos.x, destination_pos.y - ball.body.pos.y).normalize()
+            ball.body.vel *= self.balls_speed

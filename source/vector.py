@@ -29,5 +29,8 @@ class Vec2D:
     def dist(self, other) -> float:
         return sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
+    def normalize(self):
+        return self * (1/sqrt(self.x**2 + self.y**2))
+
     def t(self):
         return self.x, self.y

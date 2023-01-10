@@ -12,6 +12,8 @@ from vector import Vec2D
 class GameScreen(Screen):
     main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
     __ball_spawn_dt = 0.0
+    ball_spawn_interval = 2
+    amount_of_balls = 3
     balls = []
 
     def __init__(self, **kwargs):
@@ -60,10 +62,9 @@ class GameScreen(Screen):
         self.despawn_balls()
         self.__physics_engine.update(dt)
         self.__ball_spawn_dt += dt
-        ball_spawn_interval = .5
-        if self.__ball_spawn_dt >= ball_spawn_interval:
-            self.__ball_spawn_dt -= ball_spawn_interval
-            self.spawn_balls_over_time(4)
+        if self.__ball_spawn_dt >= self.ball_spawn_interval:
+            self.__ball_spawn_dt -= self.ball_spawn_interval
+            self.spawn_balls_over_time(self.amount_of_balls)
         for ball in self.balls:
             ball.update()
 
@@ -98,5 +99,4 @@ class GameScreen(Screen):
             new_pos.y = camera.pos.y - 0.5 * camera.size * camera.hw_ratio + ball.rad
 
         ball.pos = new_pos
-
         self.__last_touch = touch.spos
