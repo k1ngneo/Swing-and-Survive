@@ -3,11 +3,12 @@ from kivy.graphics import *
 from kivy.properties import Clock
 from kivy.uix.screenmanager import Screen
 
-import math
 
-from ball import Ball
 from camera import Camera
 from vector import Vec2D
+from ball import Ball
+from physics_engine import PhysicsEngine
+
 
 class GameScreen(Screen):
     main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
@@ -15,6 +16,7 @@ class GameScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        self.__physics_engine = PhysicsEngine()
         self.__balls = []
         self.__last_touch = 0
         
@@ -30,24 +32,30 @@ class GameScreen(Screen):
 
         new_ball = Ball(Vec2D(1.0, 1.0), 0.5)
         new_ball.set_color(0.1, 0.6, 0.1, 1.0)
+        new_ball.body.vel = Vec2D(0.1, 0.0)
         self.add_ball(new_ball)
         new_ball = Ball(Vec2D(-1.0, 1.0), 0.5)
         new_ball.set_color(0.1, 0.6, 0.1, 1.0)
+        new_ball.body.vel = Vec2D(-0.1, 0.0)
         self.add_ball(new_ball)
 
         new_ball = Ball(Vec2D(0.0, 0.0), 1.0)
         new_ball.set_color(0.1, 0.7, 0.1, 1.0)
+        new_ball.body.vel = Vec2D(0.0, 0.1)
         self.add_ball(new_ball)
 
         new_ball = Ball(Vec2D(-0.3, 0.2), 0.1)
         new_ball.set_color(0.1, 0.1, 0.1, 1.0)
+        new_ball.body.vel = Vec2D(-0.1, 0.0)
         self.add_ball(new_ball)
         new_ball = Ball(Vec2D(0.3, 0.2), 0.1)
         new_ball.set_color(0.1, 0.1, 0.1, 1.0)
+        new_ball.body.vel = Vec2D(0.1, 0.0)
         self.add_ball(new_ball)
 
         self.mouth = Ball(Vec2D(0.0, -0.4), 0.2)
         self.mouth.set_color(0.5, 0.1, 0.1, 1.0)
+        self.mouth.body.is_gravity_affected = True
         self.add_ball(self.mouth)
 
     def on_size(self, *args):
@@ -61,8 +69,12 @@ class GameScreen(Screen):
         
         self.add_widget(widget)
         self.__balls.append(new_ball)
+        self.__physics_engine.add_body(new_ball.body)
 
+    
     def update(self, dt):
+        self.__physics_engine.update(dt)
+
         for ball in self.__balls:
             ball.update()
 
