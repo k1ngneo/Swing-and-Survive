@@ -1,32 +1,30 @@
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import *
-from functools import partial
 from kivy.uix.screenmanager import Screen
 
-import hostile_balls
-from camera import Camera
-from vector import Vec2D
 from ball import Ball
+from camera import Camera
 from physics_engine import PhysicsEngine
+from vector import Vec2D
 
 
 class GameScreen(Screen):
     main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
+    __ball_spawn_dt = 0.0
+    balls = []
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         self.__physics_engine = PhysicsEngine()
-        self.__balls = []
         self.__last_touch = 0
 
         with self.canvas:
             Color(0.1, 0.3, 0.3, 1)
             self.background = Rectangle(pos=(0, 0))
 
-        Clock.schedule_interval(self.update, 1.0 / 60.0)
-        Clock.schedule_interval(partial(self.spawn_balls_over_time, 2), 2)
+        Clock.schedule_interval(self.update, 1.0 / 120.0)
 
         self.__main_ball = Ball(Vec2D(0.0, 0.0), 0.5)
         self.__main_ball.set_color(0.7, 0.4, 0.1, 1.0)
@@ -42,16 +40,35 @@ class GameScreen(Screen):
             Color(widget.color[0], widget.color[1], widget.color[2], widget.color[3])
 
         self.add_widget(widget)
-        self.__balls.append(new_ball)
+        self.balls.append(new_ball)
         self.__physics_engine.add_body(new_ball.body)
 
+    def remove_ball(self, ball):
+        widget = ball.get_widget()
+        self.remove_widget(widget)
+        self.balls.remove(ball)
+        self.__physics_engine.remove_body(ball.body)
+
+    def despawn_balls(self):
+        import hostile_balls
+        for ball in self.balls:
+            distance = ball.body.pos.dist(self.main_camera.pos)
+            if distance > hostile_balls.HostileBalls.spawn_radius + ball.body.rad:
+                self.remove_ball(ball)
+
     def update(self, dt):
+        self.despawn_balls()
         self.__physics_engine.update(dt)
-        for ball in self.__balls:
+        self.__ball_spawn_dt += dt
+        ball_spawn_interval = .5
+        if self.__ball_spawn_dt >= ball_spawn_interval:
+            self.__ball_spawn_dt -= ball_spawn_interval
+            self.spawn_balls_over_time(4)
+        for ball in self.balls:
             ball.update()
 
-    # made as in kivy.Clock documentation
-    def spawn_balls_over_time(self, amount, *largs):
+    def spawn_balls_over_time(self, amount):
+        import hostile_balls
         hb = hostile_balls.HostileBalls(amount)
         for ball in hb.hostile_balls:
             self.add_ball(ball)

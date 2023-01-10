@@ -1,44 +1,48 @@
-from source.ball import Ball
-from source.vector import Vec2D
+from ball import Ball
+from vector import Vec2D
 import game_screen
+import random
+import math
 
 
 class HostileBalls:
+    spawn_radius = math.sqrt(game_screen.GameScreen.main_camera.size ** 2 + (
+                game_screen.GameScreen.main_camera.size * game_screen.GameScreen.main_camera.hw_ratio) ** 2) * 0.5 - 3
 
     def __init__(self, amount):
         self.hostile_balls = []
         i = 0
         while i < amount:
             new_ball = Ball(Vec2D(0, 0), .25)
-            new_ball.set_color(1, 1, 0, 1)
+            new_ball.set_color(1, 0, 0, 1)
             self.hostile_balls.append(new_ball)
             i += 1
         self.set_position()
         self.set_velocity()
 
     def set_position(self):
-        import random
+        balls_to_remove = set()
         cam = game_screen.GameScreen.main_camera
+        for i in range(len(self.hostile_balls)):
+            angle = random.uniform(0, 2 * math.pi)
+            self.hostile_balls[i].body.pos = Vec2D(math.cos(angle) * self.spawn_radius + cam.pos.x,
+                                                   math.sin(angle) * self.spawn_radius + cam.pos.y)
+            # detect balls spawned on top of each other
+            for j in range(i):
+                len_between_vectors = self.hostile_balls[i].body.pos.dist(self.hostile_balls[j].body.pos)
+                if len_between_vectors < self.hostile_balls[i].body.rad + self.hostile_balls[j].body.rad:
+                    balls_to_remove.add(self.hostile_balls[i])
+        # detect balls spawned on already existing balls
         for ball in self.hostile_balls:
-            side_choice = [-1, 1]
-            random_x_side = random.choice(side_choice)
-            random_height = random.uniform(cam.pos.y - 0.5 * cam.size * cam.hw_ratio,
-                                           cam.pos.y + 0.5 * cam.size * cam.hw_ratio)
-            ball.body.pos = Vec2D(cam.pos.x + 0.5 * cam.size * random_x_side, random_height)
+            for k in range(len(game_screen.GameScreen.balls)):
+                len_between_vectors = ball.body.pos.dist(game_screen.GameScreen.balls[k].body.pos)
+                if len_between_vectors < ball.body.rad + game_screen.GameScreen.balls[k].body.rad:
+                    balls_to_remove.add(ball)
+        # remove balls
+        for ball in balls_to_remove:
+            if ball in self.hostile_balls:
+                self.hostile_balls.remove(ball)
 
     def set_velocity(self):
         for ball in self.hostile_balls:
-            ball.body.vel = Vec2D(0.3, 0.3)
-
-    def despawn_balls(self):
-        cam = game_screen.GameScreen.main_camera
-        for ball in self.hostile_balls:
-            left_border = cam.pos.x - 0.5 * cam.size
-            right_border = cam.pos.x + 0.5 * cam.size
-            top_border = cam.pos.y + 0.5 * cam.size * cam.hw_ratio
-            bottom_border = cam.pos.y - 0.5 * cam.size * cam.hw_ratio
-
-            if ball.body.pos.x < left_border or ball.body.pos.x > right_border:
-                despawn_ball()
-            elif ball.body.pos.y < bottom_border or ball.body.pos.y > top_border:
-                despawn_ball()
+            ball.body.vel = -1 * ball.body.pos

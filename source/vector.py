@@ -1,4 +1,4 @@
-import math
+from math import sqrt
 
 
 class Vec2D:
@@ -24,7 +24,10 @@ class Vec2D:
         return Vec2D(self.x / other.x, self.y / other.y)
 
     def length(self) -> float:
-        return math.sqrt(self.x ** 2 + self.y ** 2)
+        return sqrt(self.x ** 2 + self.y ** 2)
+
+    def dist(self, other) -> float:
+        return sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
     def t(self):
         return self.x, self.y
