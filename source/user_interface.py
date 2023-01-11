@@ -1,5 +1,6 @@
 from kivy.animation import Animation
-from kivy.properties import ListProperty, Clock
+from kivy.properties import ListProperty
+from kivy.clock import Clock
 from kivy.uix.button import Button
 from kivymd.uix.behaviors import HoverBehavior
 

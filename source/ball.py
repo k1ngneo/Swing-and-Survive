@@ -1,7 +1,7 @@
 from vector import Vec2D
 from ball_widget import BallWidget
 
-import math
+from math import pi as PI
 
 
 class Ball:
@@ -11,11 +11,10 @@ class Ball:
             self.pos = position
             self.rad = radius
             self.vel = Vec2D(0.0, 0.0)
-            self.mass = (4.0 / 3.0) * math.pi * (self.rad**3)
+            self.mass = (4.0 / 3.0) * PI * (self.rad**3)
 
             self.is_gravity_affected = gravity
 
-    
     def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0):
         self.body = Ball.Body(position, radius)
 

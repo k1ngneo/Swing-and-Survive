@@ -7,6 +7,7 @@ from kivy.config import Config
 from game_screen import GameScreen
 from user_interface import *
 
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 Config.set('graphics', 'width', '300')
 Config.set('graphics', 'height', '550')
 Config.write()

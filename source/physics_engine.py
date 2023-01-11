@@ -1,8 +1,8 @@
 from ball import Ball
 from vector import Vec2D
 
-class PhysicsEngine:
 
+class PhysicsEngine:
     GRAVITY_CONST = 0.01
     GRAVITY_DIR = Vec2D(0.0, -1.0)
 
@@ -12,6 +12,9 @@ class PhysicsEngine:
 
     def add_body(self, new_body: Ball.Body):
         self.__bodies.append(new_body)
+
+    def remove_body(self, body: Ball.Body):
+        self.__bodies.remove(body)
 
     def update(self, dt: float):
         self.calculate_forces()
@@ -34,4 +37,4 @@ class PhysicsEngine:
 
     def update_velocities(self, dt: float):
         for i in range(len(self.__bodies)):
-            self.__bodies[i].vel += (self.__forces[i]*(1.0/self.__bodies[i].mass)) * dt
+            self.__bodies[i].vel += (self.__forces[i] * (1.0 / self.__bodies[i].mass)) * dt

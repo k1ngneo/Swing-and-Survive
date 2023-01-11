@@ -1,62 +1,36 @@
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import *
-from kivy.properties import Clock
 from kivy.uix.screenmanager import Screen
 
-
-from camera import Camera
-from vector import Vec2D
 from ball import Ball
+from camera import Camera
 from physics_engine import PhysicsEngine
+from vector import Vec2D
 
 
 class GameScreen(Screen):
     main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
+    __ball_spawn_dt = 0.0
+    ball_spawn_interval = 2
+    amount_of_balls = 3
+    balls = []
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         self.__physics_engine = PhysicsEngine()
-        self.__balls = []
         self.__last_touch = 0
-        
+
         with self.canvas:
             Color(0.1, 0.3, 0.3, 1)
             self.background = Rectangle(pos=(0, 0))
 
-        Clock.schedule_interval(self.update, 1.0 / 60.0)
-        
-        self.__main_ball = Ball(Vec2D(0.0, 0.0), 1.0)
+        Clock.schedule_interval(self.update, 1.0 / 120.0)
+
+        self.__main_ball = Ball(Vec2D(0.0, 0.0), 0.5)
         self.__main_ball.set_color(0.7, 0.4, 0.1, 1.0)
         self.add_ball(self.__main_ball)
-
-        new_ball = Ball(Vec2D(1.0, 1.0), 0.5)
-        new_ball.set_color(0.1, 0.6, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.1, 0.0)
-        self.add_ball(new_ball)
-        new_ball = Ball(Vec2D(-1.0, 1.0), 0.5)
-        new_ball.set_color(0.1, 0.6, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(-0.1, 0.0)
-        self.add_ball(new_ball)
-
-        new_ball = Ball(Vec2D(0.0, 0.0), 1.0)
-        new_ball.set_color(0.1, 0.7, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.0, 0.1)
-        self.add_ball(new_ball)
-
-        new_ball = Ball(Vec2D(-0.3, 0.2), 0.1)
-        new_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(-0.1, 0.0)
-        self.add_ball(new_ball)
-        new_ball = Ball(Vec2D(0.3, 0.2), 0.1)
-        new_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.1, 0.0)
-        self.add_ball(new_ball)
-
-        self.mouth = Ball(Vec2D(0.0, -0.4), 0.2)
-        self.mouth.set_color(0.5, 0.1, 0.1, 1.0)
-        self.mouth.body.is_gravity_affected = True
-        self.add_ball(self.mouth)
 
     def on_size(self, *args):
         self.background.size = Window.size
@@ -66,23 +40,45 @@ class GameScreen(Screen):
         widget = new_ball.get_widget()
         with self.canvas:
             Color(widget.color[0], widget.color[1], widget.color[2], widget.color[3])
-        
+
         self.add_widget(widget)
-        self.__balls.append(new_ball)
+        self.balls.append(new_ball)
         self.__physics_engine.add_body(new_ball.body)
 
-    
-    def update(self, dt):
-        self.__physics_engine.update(dt)
+    def remove_ball(self, ball):
+        widget = ball.get_widget()
+        self.remove_widget(widget)
+        self.balls.remove(ball)
+        self.__physics_engine.remove_body(ball.body)
 
-        for ball in self.__balls:
+    def despawn_balls(self):
+        import hostile_balls
+        for ball in self.balls:
+            distance = ball.body.pos.dist(self.main_camera.pos)
+            if distance > hostile_balls.HostileBalls.spawn_radius + ball.body.rad:
+                self.remove_ball(ball)
+
+    def update(self, dt):
+        self.despawn_balls()
+        self.__physics_engine.update(dt)
+        self.__ball_spawn_dt += dt
+        if self.__ball_spawn_dt >= self.ball_spawn_interval:
+            self.__ball_spawn_dt -= self.ball_spawn_interval
+            self.spawn_balls(self.amount_of_balls)
+        for ball in self.balls:
             ball.update()
+
+    def spawn_balls(self, amount):
+        import hostile_balls
+        hb = hostile_balls.HostileBalls(amount)
+        for ball in hb.hostile_balls:
+            self.add_ball(ball)
 
     def on_touch_down(self, touch):
         self.__last_touch = touch.spos
 
     def on_touch_move(self, touch):
-        camera = GameScreen.main_camera
+        camera = self.main_camera
         ball = self.__main_ball.body
 
         # calculating change of touch position between frames
@@ -103,5 +99,4 @@ class GameScreen(Screen):
             new_pos.y = camera.pos.y - 0.5 * camera.size * camera.hw_ratio + ball.rad
 
         ball.pos = new_pos
-
         self.__last_touch = touch.spos
