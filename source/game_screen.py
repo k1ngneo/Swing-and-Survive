@@ -64,11 +64,11 @@ class GameScreen(Screen):
         self.__ball_spawn_dt += dt
         if self.__ball_spawn_dt >= self.ball_spawn_interval:
             self.__ball_spawn_dt -= self.ball_spawn_interval
-            self.spawn_balls_over_time(self.amount_of_balls)
+            self.spawn_balls(self.amount_of_balls)
         for ball in self.balls:
             ball.update()
 
-    def spawn_balls_over_time(self, amount):
+    def spawn_balls(self, amount):
         import hostile_balls
         hb = hostile_balls.HostileBalls(amount)
         for ball in hb.hostile_balls:
