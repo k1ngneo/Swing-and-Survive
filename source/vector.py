@@ -1,8 +1,9 @@
-import math
+from math import sqrt
+from math import pow
 
 
 class Vec2D:
-    def __init__(self, x, y):
+    def __init__(self, x=0.0, y=0.0):
         self.x = x
         self.y = y
 
@@ -24,7 +25,16 @@ class Vec2D:
         return Vec2D(self.x / other.x, self.y / other.y)
 
     def length(self) -> float:
-        return math.sqrt(self.x ** 2 + self.y ** 2)
+        return sqrt(pow(self.x, 2) + pow(self.y, 2))
+
+    def dist(self, other):
+        return sqrt(pow((self.x - other.x), 2) + pow((self.y - other.y), 2))
+
+    def normalize(self):
+        return self * (1/sqrt(pow(self.x, 2) + pow(self.y, 2)))
+
+    def dot(self, other) -> float:
+        return self.x * other.x + self.y * other.y
 
     def t(self):
         return self.x, self.y

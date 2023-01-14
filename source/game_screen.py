@@ -7,62 +7,37 @@ from kivy.uix.screenmanager import Screen
 from camera import Camera
 from vector import Vec2D
 from ball import Ball
-from physics_engine import PhysicsEngine
-
+import physics_engine
+import player
 
 class GameScreen(Screen):
-    main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
+    main_camera = Camera(pos=Vec2D(0.0, 0.0), size=20.0)
+    player = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.__physics_engine = PhysicsEngine()
         self.__balls = []
+        self.player = player.Player()
+        GameScreen.player = self.player
+        self.__physics_engine = physics_engine.PhysicsEngine()
+
         self.__last_touch = 0
-        
+
         with self.canvas:
             Color(0.1, 0.3, 0.3, 1)
             self.background = Rectangle(pos=(0, 0))
 
+        self.add_ball(self.player.control_ball)
+        self.add_ball(self.player.swinging_ball)
+
         Clock.schedule_interval(self.update, 1.0 / 60.0)
-        
-        self.__main_ball = Ball(Vec2D(0.0, 0.0), 1.0)
-        self.__main_ball.set_color(0.7, 0.4, 0.1, 1.0)
-        self.add_ball(self.__main_ball)
-
-        new_ball = Ball(Vec2D(1.0, 1.0), 0.5)
-        new_ball.set_color(0.1, 0.6, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.1, 0.0)
-        self.add_ball(new_ball)
-        new_ball = Ball(Vec2D(-1.0, 1.0), 0.5)
-        new_ball.set_color(0.1, 0.6, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(-0.1, 0.0)
-        self.add_ball(new_ball)
-
-        new_ball = Ball(Vec2D(0.0, 0.0), 1.0)
-        new_ball.set_color(0.1, 0.7, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.0, 0.1)
-        self.add_ball(new_ball)
-
-        new_ball = Ball(Vec2D(-0.3, 0.2), 0.1)
-        new_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(-0.1, 0.0)
-        self.add_ball(new_ball)
-        new_ball = Ball(Vec2D(0.3, 0.2), 0.1)
-        new_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        new_ball.body.vel = Vec2D(0.1, 0.0)
-        self.add_ball(new_ball)
-
-        self.mouth = Ball(Vec2D(0.0, -0.4), 0.2)
-        self.mouth.set_color(0.5, 0.1, 0.1, 1.0)
-        self.mouth.body.is_gravity_affected = True
-        self.add_ball(self.mouth)
 
     def on_size(self, *args):
         self.background.size = Window.size
         self.main_camera.update()
 
-    def add_ball(self, new_ball):
+    def add_ball(self, new_ball: Ball):
         widget = new_ball.get_widget()
         with self.canvas:
             Color(widget.color[0], widget.color[1], widget.color[2], widget.color[3])
@@ -83,7 +58,7 @@ class GameScreen(Screen):
 
     def on_touch_move(self, touch):
         camera = GameScreen.main_camera
-        ball = self.__main_ball.body
+        ball = self.player.control_ball.body
 
         # calculating change of touch position between frames
         delta_x = (touch.spos[0] - self.__last_touch[0]) * camera.size

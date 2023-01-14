@@ -40,11 +40,6 @@ GameScreen:
             pos_hint: {'center_y': 0.15, 'center_x': 0.15}
             on_press: root.manager.current = 'settings'
             background_color: 0, 0, 0, 0
-            Image:
-                source: '../images/settings_cog.png'
-                center_x: self.parent.center_x
-                center_y: self.parent.center_y
-                size: self.parent.size
 
 <SettingsScreen>:
     BoxLayout:
