@@ -5,15 +5,17 @@ from math import pi as PI
 
 
 class Ball:
-    
     class Body:
         def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0, gravity=False):
             self.pos = position
             self.rad = radius
             self.vel = Vec2D(0.0, 0.0)
-            self.mass = (4.0 / 3.0) * PI * (self.rad**3)
+            self.mass = (4.0 / 3.0) * PI * (self.rad ** 3)
 
             self.is_gravity_affected = gravity
+
+        def overlaps(self, other):
+            return self.pos.dist(other.pos) < self.rad + other.rad
 
     def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0):
         self.body = Ball.Body(position, radius)
