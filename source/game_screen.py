@@ -77,6 +77,7 @@ class GameScreen(Screen):
         elif new_pos.y - ball.rad < camera.pos.y - 0.5 * camera.size * camera.hw_ratio:
             new_pos.y = camera.pos.y - 0.5 * camera.size * camera.hw_ratio + ball.rad
 
-        ball.pos = new_pos
+        delta_pos = new_pos - ball.pos
+        self.player.move(delta_pos)
 
         self.__last_touch = touch.spos

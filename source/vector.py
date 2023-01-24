@@ -22,7 +22,10 @@ class Vec2D:
     __rmul__ = __mul__
 
     def __truediv__(self, other):
-        return Vec2D(self.x / other.x, self.y / other.y)
+        if isinstance(other, self.__class__):
+            return Vec2D(self.x / other.x, self.y / other.y)
+        elif isinstance(other, float) or isinstance(other, int):
+            return self * (1.0 / other)
 
     def length(self) -> float:
         return sqrt(pow(self.x, 2) + pow(self.y, 2))
@@ -31,7 +34,10 @@ class Vec2D:
         return sqrt(pow((self.x - other.x), 2) + pow((self.y - other.y), 2))
 
     def normalize(self):
-        return self * (1/sqrt(pow(self.x, 2) + pow(self.y, 2)))
+        if self.x == 0.0 and self.y == 0.0:
+            return self
+        else:
+            return self * (1.0/sqrt(pow(self.x, 2) + pow(self.y, 2)))
 
     def dot(self, other) -> float:
         return self.x * other.x + self.y * other.y

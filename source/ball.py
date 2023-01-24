@@ -17,6 +17,7 @@ class Ball:
 
             self.force = Vec2D(0.0, 0.0)
             self.is_gravity_affected = gravity
+            self.is_drag_affected = False
 
     
     def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0):
