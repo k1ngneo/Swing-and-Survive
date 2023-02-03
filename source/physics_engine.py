@@ -4,7 +4,7 @@ import math
 
 class PhysicsEngine:
 
-    GRAVITY_CONST = 50.0
+    GRAVITY_CONST = 70.0
     GRAVITY_DIR = Vec2D(0.0, -1.0)
 
     def __init__(self):
@@ -56,16 +56,51 @@ class PhysicsEngine:
     def update_velocities(self, dt: float):
         for body in self.__bodies:
             body.vel += (body.force*(1.0/body.mass)) * dt
+            body.speed = body.vel.length()
 
-            c_sw_pos = self.swing_ball.pos - self.control_ball.pos
-            f_sw_pos = (self.swing_ball.pos + dt * self.swing_ball.vel) - (self.control_ball.pos + dt * self.player.d_pos)
-            if f_sw_pos.length() >= self.swing_range:
-                pull_dir = -1.0 * c_sw_pos.normalize()
-                overshoot = c_sw_pos.length() - self.swing_range
-                self.swing_ball.pos += overshoot * pull_dir
+            if body.speed > Ball.Body.MAX_SPEED:
+                body.vel = body.vel.normalize() * Ball.Body.MAX_SPEED
 
-                vel_counter = (-1.0 * pull_dir).dot(self.swing_ball.vel.normalize()) * self.swing_ball.vel.length()
+        # keeping swinging ball in the range
+        c_sw_pos = self.swing_ball.pos - self.control_ball.pos
+        f_sw_pos = (self.swing_ball.pos + dt * self.swing_ball.vel) - (self.control_ball.pos + dt * self.player.d_pos)
+        if f_sw_pos.length() >= self.swing_range:
+            pull_dir = -1.0 * c_sw_pos.normalize()
+            overshoot = c_sw_pos.length() - self.swing_range
+            self.swing_ball.pos += overshoot * pull_dir
+
+            cosine = (-1.0 * pull_dir).dot(self.swing_ball.vel.normalize())
+            if cosine <= 0.5 * math.pi:
+                vel_counter = cosine * self.swing_ball.vel.length()
                 self.swing_ball.vel += vel_counter * pull_dir
+                self.swing_ball.speed = self.swing_ball.vel.length()
 
+            angular_vel = 1.0
+            if c_sw_pos.x >= 0.0 and c_sw_pos.y >= 0.0:
+                if self.swing_ball.vel.y < 0.0:
+                    angular_vel = -1.0
+            elif c_sw_pos.x < 0.0 and c_sw_pos.y >= 0.0:
+                if self.swing_ball.vel.y > 0.0:
+                    angular_vel = -1.0
+            elif c_sw_pos.x < 0.0 and c_sw_pos.y < 0.0:
+                if self.swing_ball.vel.y > 0.0:
+                    angular_vel = -1.0
+            elif c_sw_pos.x >= 0.0 and c_sw_pos.y < 0.0:
+                if self.swing_ball.vel.y < 0.0:
+                    angular_vel = -1.0
+
+            angular_vel = self.swing_ball.speed * angular_vel
+            angular_pos = math.acos(c_sw_pos.x / c_sw_pos.length())
+            if c_sw_pos.y < 0.0:
+                # maybe it should not be exactly PI
+                angular_pos += math.pi
+
+            angular_pos += self.swing_ball.speed * dt
+            c_sw_pos.x = math.cos(angular_pos) * self.swing_range
+            c_sw_pos.y = math.sin(angular_pos) * self.swing_range
+
+            self.swing_ball.vel = self.control_ball.pos + c_sw_pos - self.swing_ball.pos
+
+        for body in self.__bodies:
             if body.vel.length() > Ball.Body.MAX_SPEED:
                 body.vel = body.vel.normalize() * Ball.Body.MAX_SPEED

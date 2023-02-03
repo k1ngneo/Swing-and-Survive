@@ -13,6 +13,7 @@ class Ball:
             self.pos = position
             self.rad = radius
             self.vel = Vec2D(0.0, 0.0)
+            self.speed = 0.0
             self.mass = (4.0 / 3.0) * math.pi * (self.rad**3)
 
             self.force = Vec2D(0.0, 0.0)
