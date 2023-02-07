@@ -30,6 +30,7 @@ class GameScreen(Screen):
 
         self.__main_ball = Ball(Vec2D(0.0, 0.0), 0.5)
         self.__main_ball.set_color(0.7, 0.4, 0.1, 1.0)
+        self.__main_ball.body.mass = 1000000000000000000000000000
         self.add_ball(self.__main_ball)
 
     def on_size(self, *args):
@@ -59,6 +60,8 @@ class GameScreen(Screen):
                 self.remove_ball(ball)
 
     def update(self, dt):
+        # if dt > 1/120:
+        #     dt = 1/120
         self.despawn_balls()
         self.__physics_engine.update(dt)
         self.__ball_spawn_dt += dt
