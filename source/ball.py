@@ -1,7 +1,7 @@
-from vector import Vec2D
-from ball_widget import BallWidget
-
 from math import pi as PI
+
+from ball_widget import BallWidget
+from vector import Vec2D
 
 
 class Ball:
@@ -15,7 +15,7 @@ class Ball:
             self.is_gravity_affected = gravity
 
         def overlaps(self, other):
-            return self.pos.dist(other.pos) < self.rad + other.rad
+            return self.pos.dist2(other.pos) < (self.rad + other.rad)**2
 
     def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0):
         self.body = Ball.Body(position, radius)

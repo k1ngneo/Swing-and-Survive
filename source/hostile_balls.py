@@ -8,7 +8,7 @@ import math
 class HostileBalls:
     spawn_radius = math.sqrt(game_screen.GameScreen.main_camera.size ** 2 + (
                 game_screen.GameScreen.main_camera.size * game_screen.GameScreen.main_camera.hw_ratio) ** 2) * 0.5 + 1
-    balls_speed = 3
+    balls_speed = 4
 
     def __init__(self, amount):
         self.hostile_balls = []
