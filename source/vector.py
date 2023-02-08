@@ -1,5 +1,4 @@
 from math import sqrt
-from math import pow
 
 
 class Vec2D:
@@ -27,17 +26,22 @@ class Vec2D:
         elif isinstance(other, float) or isinstance(other, int):
             return self * (1.0 / other)
 
-    def length(self) -> float:
-        return sqrt(pow(self.x, 2) + pow(self.y, 2))
+    def __str__(self):
+        return f"({self.x}, {self.y})"
 
-    def dist(self, other):
-        return sqrt(pow((self.x - other.x), 2) + pow((self.y - other.y), 2))
+    def length(self) -> float:
+        return sqrt(self.x**2 + self.y**2)
+
+    def dist(self, other) -> float:
+        return sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
+
+    def dist2(self, other) -> float:
+        return (self.x - other.x)**2 + (self.y - other.y)**2
 
     def normalize(self):
-        if self.x == 0.0 and self.y == 0.0:
-            return self
-        else:
-            return self * (1.0/sqrt(pow(self.x, 2) + pow(self.y, 2)))
+        if not (self.x == 0 and self.y == 0):
+            return self * (1/sqrt(self.x**2 + self.y**2))
+        return self
 
     def dot(self, other) -> float:
         return self.x * other.x + self.y * other.y

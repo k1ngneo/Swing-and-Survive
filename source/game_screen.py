@@ -1,6 +1,6 @@
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import *
-from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen
 
 from camera import Camera
@@ -15,6 +15,11 @@ class GameData:
     balls = []
 
 class GameScreen(Screen):
+    main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
+    __ball_spawn_dt = 0.0
+    ball_spawn_interval = 2
+    amount_of_balls = 3
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -33,7 +38,7 @@ class GameScreen(Screen):
         self.add_ball(GameData.player.control_ball)
         self.add_ball(GameData.player.swinging_ball)
 
-        Clock.schedule_interval(self.update, 1.0 / 60.0)
+        Clock.schedule_interval(self.update, 1.0 / 120.0)
 
     def on_size(self, *args):
         self.background.size = Window.size
@@ -43,23 +48,47 @@ class GameScreen(Screen):
         widget = new_ball.get_widget()
         with self.canvas:
             Color(widget.color[0], widget.color[1], widget.color[2], widget.color[3])
-        
+
         self.add_widget(widget)
         GameData.balls.append(new_ball)
         self.__physics_engine.add_body(new_ball.body)
 
-    
-    def update(self, dt):
-        if dt > 1/120.0:
-            dt = 1/120
+    def remove_ball(self, ball):
+        widget = ball.get_widget()
+        self.remove_widget(widget)
+        GameData.balls.remove(ball)
+        self.__physics_engine.remove_body(ball.body)
 
-        self.__physics_engine.update(dt)
+    def despawn_balls(self):
+        import hostile_balls
+        for ball in GameData.balls:
+            distance = ball.body.pos.dist(self.main_camera.pos)
+            if distance > hostile_balls.HostileBalls.spawn_radius + ball.body.rad:
+                self.remove_ball(ball)
+
+    def update(self, dt):
+        # if dt > 1/120:
+        #     dt = 1/120
 
         GameData.player.update()
+
+        self.despawn_balls()
+        self.__physics_engine.update(dt)
+        self.__ball_spawn_dt += dt
+        if self.__ball_spawn_dt >= self.ball_spawn_interval:
+            self.__ball_spawn_dt -= self.ball_spawn_interval
+            self.spawn_balls(self.amount_of_balls)
+
         self.line.points = GameData.player.line_widget.line.points
 
         for ball in GameData.balls:
             ball.update()
+
+    def spawn_balls(self, amount):
+        import hostile_balls
+        hb = hostile_balls.HostileBalls(amount)
+        for ball in hb.hostile_balls:
+            self.add_ball(ball)
 
     def on_touch_down(self, touch):
         self.__last_touch = touch.spos

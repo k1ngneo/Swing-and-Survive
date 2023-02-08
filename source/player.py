@@ -21,7 +21,7 @@ class Player:
         self.d_pos = Vec2D()
         self.control_ball = Ball(Vec2D(0.0, 0.0), 0.5)
         self.control_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        self.control_ball.body.mass = float('inf')
+        self.control_ball.body.mass = 10000000
 
         self.swing_range = 4.0
         self.swinging_ball = Ball(Vec2D(-4.0, 0.0), 1.0)

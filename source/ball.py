@@ -1,11 +1,10 @@
-import math
+from math import pi as PI
 
-from vector import Vec2D
 from ball_widget import BallWidget
+from vector import Vec2D
 
 
 class Ball:
-    
     class Body:
         MAX_SPEED = 120.0
 
@@ -13,13 +12,15 @@ class Ball:
             self.pos = position
             self.rad = radius
             self.vel = Vec2D(0.0, 0.0)
-            self.mass = (4.0 / 3.0) * math.pi * (self.rad**3)
+            self.mass = (4.0 / 3.0) * PI * (self.rad ** 3)
 
             self.force = Vec2D(0.0, 0.0)
             self.is_gravity_affected = gravity
             self.is_drag_affected = False
 
-    
+        def overlaps(self, other):
+            return self.pos.dist2(other.pos) < (self.rad + other.rad)**2
+
     def __init__(self, position=Vec2D(0.0, 0.0), radius=1.0):
         self.body = Ball.Body(position, radius)
 

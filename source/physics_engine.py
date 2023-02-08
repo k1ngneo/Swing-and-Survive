@@ -1,9 +1,12 @@
+import math
+from itertools import combinations
+
 from ball import Ball
 from vector import Vec2D
-import math
+
 
 class PhysicsEngine:
-    GRAVITY_CONST = 50.0
+    GRAVITY_CONST = 10.0
     GRAVITY_DIR = Vec2D(0.0, -1.0)
 
     def __init__(self):
@@ -18,10 +21,13 @@ class PhysicsEngine:
     def add_body(self, new_body: Ball.Body):
         self.__bodies.append(new_body)
 
+    def remove_body(self, body: Ball.Body):
+        self.__bodies.remove(body)
+
     def update(self, dt: float):
-        #dt = 0.01
         self.calculate_forces(dt)
         self.update_velocities(dt)
+        self.handle_collisions()
         self.advance_bodies(dt)
 
     def advance_bodies(self, dt: float):
@@ -52,3 +58,42 @@ class PhysicsEngine:
 
             if body.vel.length() > Ball.Body.MAX_SPEED:
                 body.vel = body.vel.normalize() * Ball.Body.MAX_SPEED
+
+    def handle_collisions(self):
+        def change_velocities(body1, body2):
+            distance_vect = body1.pos - body2.pos
+            distance_vect_mag = distance_vect.length()
+            min_distance = body1.rad + body2.rad
+            distance_correction = (min_distance - distance_vect_mag) / 2.0
+
+            correction_vector = distance_vect.normalize() * distance_correction * 1.00001
+            body2.pos -= correction_vector
+            body1.pos += correction_vector
+
+            theta = math.acos(distance_vect.normalize().x)
+            if distance_vect.y < 0:
+                theta += (math.pi - theta) * 2
+            sine = math.sin(theta)
+            cosine = math.cos(theta)
+
+            vTemp = [Vec2D(), Vec2D()]
+            vTemp[0].x = cosine * body1.vel.x + sine * body1.vel.y
+            vTemp[0].y = cosine * body1.vel.y - sine * body1.vel.x
+            vTemp[1].x = cosine * body2.vel.x + sine * body2.vel.y
+            vTemp[1].y = cosine * body2.vel.y - sine * body2.vel.x
+
+            vFinal = [Vec2D(), Vec2D()]
+            vFinal[0].x = ((body1.mass - body2.mass) * vTemp[0].x + 2 * body2.mass * vTemp[1].x) / (body1.mass + body2.mass)
+            vFinal[0].y = vTemp[0].y
+            vFinal[1].x = ((body2.mass - body1.mass) * vTemp[1].x + 2 * body1.mass * vTemp[0].x) / (body1.mass + body2.mass)
+            vFinal[1].y = vTemp[1].y
+
+            body1.vel.x = cosine * vFinal[0].x - sine * vFinal[0].y
+            body1.vel.y = cosine * vFinal[0].y + sine * vFinal[0].x
+            body2.vel.x = cosine * vFinal[1].x - sine * vFinal[1].y
+            body2.vel.y = cosine * vFinal[1].y + sine * vFinal[1].x
+
+        pairs = combinations(self.__bodies, 2)
+        for i, j in pairs:
+            if i.overlaps(j):
+                change_velocities(i, j)
