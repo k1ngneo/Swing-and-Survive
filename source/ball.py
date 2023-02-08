@@ -1,7 +1,7 @@
+import math
+
 from vector import Vec2D
 from ball_widget import BallWidget
-
-import math
 
 
 class Ball:
@@ -28,9 +28,9 @@ class Ball:
         self.update()
 
     def update(self):
-        from game_screen import GameScreen as gs
-        self.__widget.pos = gs.main_camera.world_to_clip(self.body.pos).t()
-        self.__widget.radius = self.body.rad / gs.main_camera.size
+        from game_screen import GameData
+        self.__widget.pos = GameData.main_camera.world_to_clip(self.body.pos).t()
+        self.__widget.radius = self.body.rad / GameData.main_camera.size
         self.__widget.update()
 
     def set_color(self, r, g, b, a):

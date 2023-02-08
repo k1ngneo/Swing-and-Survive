@@ -3,18 +3,17 @@ from vector import Vec2D
 import math
 
 class PhysicsEngine:
-
     GRAVITY_CONST = 50.0
     GRAVITY_DIR = Vec2D(0.0, -1.0)
 
     def __init__(self):
-        from game_screen import GameScreen
+        from game_screen import GameData
         self.__bodies = []
 
-        self.player = GameScreen.player
-        self.control_ball = GameScreen.player.control_ball.body
-        self.swing_ball = GameScreen.player.swinging_ball.body
-        self.swing_range = GameScreen.player.swing_range
+        self.player = GameData.player
+        self.control_ball = GameData.player.control_ball.body
+        self.swing_ball = GameData.player.swinging_ball.body
+        self.swing_range = GameData.player.swing_range
 
     def add_body(self, new_body: Ball.Body):
         self.__bodies.append(new_body)
@@ -29,7 +28,7 @@ class PhysicsEngine:
         for body in self.__bodies:
             body.pos += dt * body.vel
             if body.is_drag_affected:
-                body.vel -= body.vel * dt * 0.5
+                body.vel -= body.vel * dt * 0.1
 
     def calculate_forces(self, dt: float):
         # gravity
@@ -46,8 +45,6 @@ class PhysicsEngine:
             pull_force_s = PhysicsEngine.GRAVITY_CONST * (1.0 + string_tensity_sq)
             pull_force = pull_dir * pull_force_s
             self.swing_ball.force += pull_force
-
-
 
     def update_velocities(self, dt: float):
         for body in self.__bodies:
