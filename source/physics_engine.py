@@ -6,7 +6,7 @@ from vector import Vec2D
 
 
 class PhysicsEngine:
-    GRAVITY_CONST = 10.0
+    GRAVITY_CONST = 100.0
     GRAVITY_DIR = Vec2D(0.0, -1.0)
 
     def __init__(self):
@@ -34,7 +34,7 @@ class PhysicsEngine:
         for body in self.__bodies:
             body.pos += dt * body.vel
             if body.is_drag_affected:
-                body.vel -= body.vel * dt * 0.1
+                body.vel -= body.vel * dt * 0.7
 
     def calculate_forces(self, dt: float):
         # gravity

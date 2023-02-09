@@ -43,7 +43,4 @@ class Player:
         line_pos1 = GameData.main_camera.world_to_clip(self.control_ball.body.pos) * screen_size
         line_pos2 = GameData.main_camera.world_to_clip(self.swinging_ball.body.pos) * screen_size
         self.line_widget.line.points.clear()
-        self.line_widget.line.points.append(line_pos1.x)
-        self.line_widget.line.points.append(line_pos1.y)
-        self.line_widget.line.points.append(line_pos2.x)
-        self.line_widget.line.points.append(line_pos2.y)
+        self.line_widget.line.points.extend([line_pos1.x, line_pos1.y, line_pos2.x, line_pos2.y])

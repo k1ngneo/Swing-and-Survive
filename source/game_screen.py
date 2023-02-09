@@ -15,7 +15,6 @@ class GameData:
     balls = []
 
 class GameScreen(Screen):
-    main_camera = Camera(pos=Vec2D(0.0, 0.0), size=7.0)
     __ball_spawn_dt = 0.0
     ball_spawn_interval = 2
     amount_of_balls = 3
@@ -34,7 +33,6 @@ class GameScreen(Screen):
             Color(0.1, 0.1, 0.1, 1.0)
             self.line = Line(points=[], width=1.5)
 
-        #self.add_widget(GameData.player.line_widget)
         self.add_ball(GameData.player.control_ball)
         self.add_ball(GameData.player.swinging_ball)
 
@@ -62,7 +60,7 @@ class GameScreen(Screen):
     def despawn_balls(self):
         import hostile_balls
         for ball in GameData.balls:
-            distance = ball.body.pos.dist(self.main_camera.pos)
+            distance = ball.body.pos.dist(GameData.main_camera.pos)
             if distance > hostile_balls.HostileBalls.spawn_radius + ball.body.rad:
                 self.remove_ball(ball)
 
