@@ -6,16 +6,16 @@ import math
 
 
 class HostileBalls:
-    spawn_radius = math.sqrt(game_screen.GameScreen.main_camera.size ** 2 + (
-                game_screen.GameScreen.main_camera.size * game_screen.GameScreen.main_camera.hw_ratio) ** 2) * 0.5 + 1
+    spawn_radius = math.sqrt(game_screen.GameData.main_camera.size ** 2 + (
+                game_screen.GameData.main_camera.size * game_screen.GameData.main_camera.hw_ratio) ** 2) * 0.5 + 1
     balls_speed = 4
 
     def __init__(self, amount):
         self.hostile_balls = []
-        self.cam = game_screen.GameScreen.main_camera
+        self.cam = game_screen.GameData.main_camera
         i = 0
         while i < amount:
-            new_ball = Ball(Vec2D(0, 0), .25)
+            new_ball = Ball(Vec2D(0, 0), .5)
             new_ball.set_color(1, 0, 0, 1)
             self.hostile_balls.append(new_ball)
             i += 1
@@ -35,9 +35,9 @@ class HostileBalls:
                     balls_to_remove.add(self.hostile_balls[i])
         # detect balls spawned on already existing balls
         for ball in self.hostile_balls:
-            for k in range(len(game_screen.GameScreen.balls)):
-                len_between_vectors = ball.body.pos.dist(game_screen.GameScreen.balls[k].body.pos)
-                if len_between_vectors < ball.body.rad + game_screen.GameScreen.balls[k].body.rad:
+            for k in range(len(game_screen.GameData.balls)):
+                len_between_vectors = ball.body.pos.dist(game_screen.GameData.balls[k].body.pos)
+                if len_between_vectors < ball.body.rad + game_screen.GameData.balls[k].body.rad:
                     balls_to_remove.add(ball)
         # remove balls
         for ball in balls_to_remove:

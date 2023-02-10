@@ -24,7 +24,7 @@ class Vec2D:
         if isinstance(other, self.__class__):
             return Vec2D(self.x / other.x, self.y / other.y)
         elif isinstance(other, float) or isinstance(other, int):
-            return Vec2D(self.x / other, self.y / other)
+            return self * (1.0 / other)
 
     def __str__(self):
         return f"({self.x}, {self.y})"
@@ -39,7 +39,12 @@ class Vec2D:
         return (self.x - other.x)**2 + (self.y - other.y)**2
 
     def normalize(self):
-        return self * (1/sqrt(self.x**2 + self.y**2))
+        if not (self.x == 0 and self.y == 0):
+            return self * (1/sqrt(self.x**2 + self.y**2))
+        return self
+
+    def dot(self, other) -> float:
+        return self.x * other.x + self.y * other.y
 
     def t(self):
         return self.x, self.y

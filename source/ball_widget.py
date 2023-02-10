@@ -27,4 +27,3 @@ class BallWidget(Widget):
         ball_size = (diameter, diameter)
         self.ellipse.pos = (pos[0] - 0.5 * ball_size[0], pos[1] - 0.5 * ball_size[1])
         self.ellipse.size = ball_size
-
