@@ -9,10 +9,12 @@ from ball import Ball
 import physics_engine
 import player
 
+
 class GameData:
     main_camera = Camera(pos=Vec2D(0.0, 0.0), size=20.0)
     player = None
     balls = []
+
 
 class GameScreen(Screen):
     __ball_spawn_dt = 0.0
@@ -75,7 +77,8 @@ class GameScreen(Screen):
         self.__ball_spawn_dt += dt
         if self.__ball_spawn_dt >= self.ball_spawn_interval:
             self.__ball_spawn_dt -= self.ball_spawn_interval
-            self.spawn_balls(self.amount_of_balls)
+            if self.manager.current == 'game':
+                self.spawn_balls(self.amount_of_balls)
 
         self.line.points = GameData.player.line_widget.line.points
 
@@ -114,5 +117,4 @@ class GameScreen(Screen):
 
         delta_pos = new_pos - ball.pos
         GameData.player.move(delta_pos)
-
         self.__last_touch = touch.spos

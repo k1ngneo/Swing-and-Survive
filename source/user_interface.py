@@ -1,5 +1,5 @@
 from kivy.animation import Animation
-from kivy.properties import ListProperty
+from kivy.properties import ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.uix.button import Button
 from kivymd.uix.behaviors import HoverBehavior
@@ -18,12 +18,15 @@ class HoverButton(Button, HoverBehavior):
 
 
 class TapButton(Button):
+    scale = NumericProperty(1)
 
     def __init__(self, **kwargs):
         super(TapButton, self).__init__(**kwargs)
-        Clock.schedule_once(self.start_pulsing, .5)
+        Clock.schedule_once(self.start_pulsing, .25)
+        self.initial_scale = self.scale
 
     def start_pulsing(self, *args):
-        anim = Animation(font_size=16.0, d=.999) + Animation(font_size=25.0, d=.999)
+        anim = Animation(scale=self.initial_scale * 1.4, duration=.999) + Animation(scale=self.initial_scale, duration=.999)
+        anim.start(self)
         anim.repeat = True
         anim.start(self)
