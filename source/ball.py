@@ -29,9 +29,9 @@ class Ball:
         self.update()
 
     def update(self):
-        from game_screen import GameData
-        self.__widget.pos = GameData.main_camera.world_to_clip(self.body.pos).t()
-        self.__widget.radius = self.body.rad / GameData.main_camera.size
+        from scene_data import SceneData
+        self.__widget.pos = SceneData.main_camera.world_to_clip(self.body.pos).t()
+        self.__widget.radius = self.body.rad / SceneData.main_camera.size
         self.__widget.update()
 
     def set_color(self, r, g, b, a):
