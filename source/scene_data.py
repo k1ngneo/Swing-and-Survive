@@ -7,6 +7,6 @@ class SceneData:
 
     def __init__(self):
         self.balls = []
-        self.ball_spawn_interval = 2
-        self.amount_of_balls = 3
-        self.balls_speed = 4
+        self.ball_spawn_interval = 3
+        self.amount_of_balls = 5
+        self.balls_speed = 10

@@ -8,8 +8,6 @@ from scene import Scene
 
 class GameScreen(Screen):
     __ball_spawn_dt = 0.0
-    ball_spawn_interval = 2
-    amount_of_balls = 3
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
