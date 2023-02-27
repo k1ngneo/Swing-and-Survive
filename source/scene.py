@@ -16,7 +16,8 @@ class Scene:
         self.engine = PhysicsEngine(self)
         self.parent_widget = parent
         self.__ball_spawn_dt = 0.0
-        self.__last_touch = 0
+        self.__last_touch = 0.0
+        self.dt = 0.0
 
     def add_player(self):
         self.player = Player()
@@ -50,9 +51,11 @@ class Scene:
         for ball in self.data.balls:
             distance = ball.body.pos.dist(self.data.main_camera.pos)
             if distance > HostileBallsSpawner.spawn_radius + ball.body.rad:
-                self.remove_ball(ball)
+                if self.player and ball is not self.player.swinging_ball:
+                    self.remove_ball(ball)
 
     def update(self, dt):
+        self.dt = dt
         if dt > 0.2:
             dt = 0.2
 
@@ -72,6 +75,10 @@ class Scene:
 
     def on_touch_down(self, touch):
         self.__last_touch = touch.spos
+
+    def on_touch_up(self, touch):
+        if self.player:
+            self.player.control_ball.body.vel = Vec2D(0.0, 0.0)
 
     def on_touch_move(self, touch):
         if self.player:
@@ -96,5 +103,5 @@ class Scene:
                 new_pos.y = camera.pos.y - 0.5 * camera.size * camera.hw_ratio + ball.rad
 
             delta_pos = new_pos - ball.pos
-            self.player.move(delta_pos)
+            self.player.move(delta_pos, self.dt)
             self.__last_touch = touch.spos

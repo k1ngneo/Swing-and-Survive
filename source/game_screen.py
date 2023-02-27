@@ -34,5 +34,8 @@ class GameScreen(Screen):
     def on_touch_down(self, touch):
         self.scene.on_touch_down(touch)
 
+    def on_touch_up(self, touch):
+        self.scene.on_touch_up(touch)
+
     def on_touch_move(self, touch):
         self.scene.on_touch_move(touch)

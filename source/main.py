@@ -19,8 +19,10 @@ Config.write()
 class SettingsScreen(Screen):
     pass
 
+
 class SceneWidget(Widget):
     pass
+
 
 class MenuScreen(Screen):
     __ball_spawn_dt = 0.0

@@ -31,7 +31,8 @@ class PhysicsEngine:
 
     def advance_bodies(self, dt: float):
         for body in self.__bodies:
-            body.pos += dt * body.vel
+            if body is not self.control_ball:
+                body.pos += dt * body.vel
             if body.is_drag_affected:
                 body.vel -= body.vel * dt * 0.7
 
