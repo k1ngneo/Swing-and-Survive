@@ -1,6 +1,6 @@
 from kivy.animation import Animation
-from kivy.properties import ListProperty, NumericProperty
 from kivy.clock import Clock
+from kivy.properties import ListProperty, NumericProperty
 from kivy.uix.button import Button
 from kivymd.uix.behaviors import HoverBehavior
 
@@ -26,7 +26,20 @@ class TapButton(Button):
         self.initial_scale = self.scale
 
     def start_pulsing(self, *args):
-        anim = Animation(scale=self.initial_scale * 1.4, duration=.999) + Animation(scale=self.initial_scale, duration=.999)
+        anim = Animation(scale=self.initial_scale * 1.4, duration=.999) + Animation(scale=self.initial_scale,
+                                                                                    duration=.999)
         anim.start(self)
         anim.repeat = True
-        anim.start(self)
+
+
+class SettingsButton(Button, HoverBehavior):
+    angle = NumericProperty(1)
+
+    def on_enter(self):
+        Animation(angle=45, duration=0.3).start(self)
+
+    def on_leave(self):
+        Animation(angle=0, duration=0.3).start(self)
+
+    def on_press(self):
+        Animation(angle=0, duration=0.3).start(self)

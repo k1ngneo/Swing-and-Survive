@@ -12,6 +12,7 @@ class PhysicsEngine:
     def __init__(self, scene):
         self.__bodies = []
         self.player = scene.player
+        self.control_ball = None
         if scene.player:
             self.control_ball = scene.player.control_ball.body
             self.swing_ball = scene.player.swinging_ball.body
@@ -24,7 +25,7 @@ class PhysicsEngine:
         self.__bodies.remove(body)
 
     def update(self, dt: float):
-        self.calculate_forces(dt)
+        self.calculate_forces()
         self.update_velocities(dt)
         self.handle_collisions()
         self.advance_bodies(dt)
@@ -36,7 +37,7 @@ class PhysicsEngine:
             if body.is_drag_affected:
                 body.vel -= body.vel * dt * 0.7
 
-    def calculate_forces(self, dt: float):
+    def calculate_forces(self):
         # gravity
         for body in self.__bodies:
             body.force = Vec2D(0.0, 0.0)
