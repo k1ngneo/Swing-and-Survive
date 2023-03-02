@@ -2,18 +2,6 @@ SettingsScreen:
 
 <GameScreen>:
     name: 'game'
-<HoverButton>:
-    size_hint: .4, .09
-    font_size: "18sp"
-    background_color: 1, 1, 1, 0
-    color: 0, 0, 0, 1
-    canvas.before:
-        Color:
-            rgb: self.background
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            radius: [30]
 
 <MenuScreen>:
     name: 'menu'
@@ -66,12 +54,3 @@ SettingsScreen:
                 center_x: self.parent.center_x
                 center_y: self.parent.center_y
                 size: self.parent.size
-
-<SettingsScreen>:
-    name: 'settings'
-    BoxLayout:
-        HoverButton:
-            text: 'My settings button'
-        HoverButton:
-            text: 'Back to menu'
-            on_press: root.manager.current = 'menu'

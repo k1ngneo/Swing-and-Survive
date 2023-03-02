@@ -1,11 +1,16 @@
 __version__ = "0.1"
 
 from kivy.app import App
+from kivy.config import Config, ConfigParser
+from kivy.core.window import Window
+from kivy.graphics import Color, Rectangle
 from kivy.properties import ObjectProperty
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import FadeTransition, Screen
 from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.settings import SettingsWithNoMenu
 from kivy.uix.widget import Widget
-from kivy.config import Config
+
 from game_screen import GameScreen
 from scene import Scene
 from user_interface import *
@@ -17,11 +22,56 @@ Config.write()
 
 
 class SettingsScreen(Screen):
-    pass
 
+    def __init__(self, **kwargs):
+        super(SettingsScreen, self).__init__(**kwargs)
+        self.conf = ConfigParser()
+        self.conf.read('settings.ini')
 
-class SceneWidget(Widget):
-    pass
+        with self.canvas:
+            Color(0, 0, 0, 1)
+            self.background = Rectangle(pos=(0, 0))
+
+        # Create a BoxLayout for the settings screen
+        settings_layout = FloatLayout()
+
+        # Create a SettingsWithNoMenu object and add it to the layout
+        settings = SettingsWithNoMenu()
+        settings_layout.add_widget(settings)
+
+        # Add the sound and music configuration option
+        settings.add_json_panel('Settings', self.conf, data='''
+                [
+                    {
+                        "type": "bool",
+                        "title": "Music",
+                        "desc": "Turn music on or off",
+                        "section": "music",
+                        "key": "enable_music"
+                    },
+                    {
+                        "type": "bool",
+                        "title": "Sound",
+                        "desc": "Turn sound on or off",
+                        "section": "sound",
+                        "key": "enable_sound"
+                    }
+                ]
+                ''')
+
+        # Add a back button
+        back_button = HoverButton(text='Save', pos_hint={'x': 0.3, 'y': 0.05})
+        back_button.bind(on_press=self.go_back)
+        settings_layout.add_widget(back_button)
+
+        # Add the layout to the screen
+        self.add_widget(settings_layout)
+
+    def on_size(self, *args):
+        self.background.size = Window.size
+
+    def go_back(self, instance):
+        self.manager.current = 'menu'
 
 
 class MenuScreen(Screen):
