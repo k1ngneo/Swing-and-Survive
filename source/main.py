@@ -19,7 +19,10 @@ Config.write()
 class SettingsScreen(Screen):
     pass
 
-class SceneWidget(Widget):
+class SummaryScreen(Screen):
+    pass
+
+class Background(Widget):
     pass
 
 class MenuScreen(Screen):
@@ -47,6 +50,7 @@ class BallCrushApp(App):
         sm.add_widget(MenuScreen(name='menu'))
         sm.add_widget(SettingsScreen(name='settings'))
         sm.add_widget(GameScreen(name='game'))
+        sm.add_widget(SummaryScreen(name='summary'))
         return sm
 
 

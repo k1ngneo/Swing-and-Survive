@@ -95,4 +95,10 @@ class PhysicsEngine:
         pairs = combinations(self.__bodies, 2)
         for i, j in pairs:
             if i.overlaps(j):
+                if self.player:
+                    if i is self.control_ball or j is self.control_ball:
+                        if not (i is self.swing_ball or j is self.swing_ball):
+                            from scene import Scene
+                            Scene.current_scene.on_player_hit()
+
                 change_velocities(i, j)

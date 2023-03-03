@@ -1,13 +1,17 @@
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import *
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import Screen
+from kivy.uix.widget import Widget
 
 from scene import Scene
 
 
 class GameScreen(Screen):
     __ball_spawn_dt = 0.0
+    scene_widget = ObjectProperty(Widget())
+    score_txt = StringProperty('Score: 10')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -15,8 +19,6 @@ class GameScreen(Screen):
         self.scene = Scene(self)
 
         with self.canvas:
-            Color(0.1, 0.3, 0.3, 1)
-            self.background = Rectangle(pos=(0, 0))
             Color(0.1, 0.1, 0.1, 1.0)
             self.line = Line(points=[], width=1.5)
 
@@ -24,7 +26,6 @@ class GameScreen(Screen):
         Clock.schedule_interval(self.update, 1.0 / 120.0)
 
     def on_size(self, *args):
-        self.background.size = Window.size
         self.scene.data.main_camera.update()
 
     def update(self, dt):

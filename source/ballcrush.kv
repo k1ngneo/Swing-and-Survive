@@ -1,7 +1,5 @@
 SettingsScreen:
 
-<GameScreen>:
-    name: 'game'
 <HoverButton>:
     size_hint: .4, .09
     font_size: "18sp"
@@ -31,11 +29,11 @@ SettingsScreen:
         Label:
             pos_hint: {'center_y': 0.75, 'center_x': 0.5}
             text: "BALL CRUSH"
-            color: 0, 0, 0, 1
+            color: 0.1, 0.1, 0.1, 1
             font_size: "40sp"
         TapButton:
             size_hint: 1, .35
-            color: 0, 0, 0, 1
+            color: 0.1, 0.1, 0.1, 1
             background_color: 0, 0, 0, 0
             pos_hint: {'center_y': 0.4, 'center_x': 0.5}
             text: 'Tap to play'
@@ -68,3 +66,55 @@ SettingsScreen:
         HoverButton:
             text: 'Back to menu'
             on_press: root.manager.current = 'menu'
+
+<GameScreen>:
+    name: 'game'
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.3, 0.3, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    scene_widget: scene_widget
+    FloatLayout:
+        id: scene_widget
+
+    FloatLayout:
+        Label:
+            pos_hint: {'center_y': 0.75, 'center_x': 0.5}
+            text: root.score_txt
+            color: 0.1, 0.1, 0.1, 1
+            font_size: "24sp"
+
+<SummaryScreen>:
+    name: 'summary'
+    canvas.before:
+        Color:
+            rgba: (0.1, 0.3, 0.3, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    GridLayout:
+        cols: 1
+        size_hint: 0.75, 0.5
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        col_default_width: 1.0
+        row_default_height: 0.33
+
+        Label:
+            text: 'Game Over'
+            color: 0.1, 0.1, 0.1, 1
+            font_size: "32sp"
+            size_hint_y: 0.4
+        Label:
+            text: 'Score: 10'
+            color: 0.1, 0.1, 0.1, 1
+            font_size: "24sp"
+            size_hint_y: 0.2
+        TapButton:
+            color: 0.1, 0.1, 0.1, 1
+            background_color: 0, 0, 0, 0
+            pos_hint: {'center_y': 0.3, 'center_x': 0.5}
+            text: 'Tap to play again'
+            on_press: root.manager.current = 'game'

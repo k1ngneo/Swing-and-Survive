@@ -8,15 +8,20 @@ from vector import Vec2D
 
 
 class Scene:
+    current_scene = None
 
     def __init__(self, parent):
         from scene_data import SceneData
+
+        Scene.current_scene = self
+
         self.data = SceneData()
         self.player = None
         self.engine = PhysicsEngine(self)
         self.parent_widget = parent
         self.__ball_spawn_dt = 0.0
         self.__last_touch = 0
+
 
     def add_player(self):
         self.player = Player()
@@ -50,7 +55,8 @@ class Scene:
         for ball in self.data.balls:
             distance = ball.body.pos.dist(self.data.main_camera.pos)
             if distance > HostileBallsSpawner.spawn_radius + ball.body.rad:
-                self.remove_ball(ball)
+                if self.player is not None and ball is not self.player.swinging_ball:
+                    self.remove_ball(ball)
 
     def update(self, dt):
         if dt > 0.2:
@@ -69,6 +75,9 @@ class Scene:
 
         for ball in self.data.balls:
             ball.update()
+
+    def on_player_hit(self):
+        self.parent_widget.manager.current = 'summary'
 
     def on_touch_down(self, touch):
         self.__last_touch = touch.spos
