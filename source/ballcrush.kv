@@ -55,15 +55,6 @@ SettingsScreen:
                 center_y: self.parent.center_y
                 size: self.parent.size
 
-<SettingsScreen>:
-    name: 'settings'
-    BoxLayout:
-        HoverButton:
-            text: 'My settings button'
-        HoverButton:
-            text: 'Back to menu'
-            on_press: root.manager.current = 'menu'
-
 <GameScreen>:
     name: 'game'
     canvas.before:
