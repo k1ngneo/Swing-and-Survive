@@ -1,22 +1,23 @@
 from ball import Ball
 from vector import Vec2D
-import game_screen
+from scene_data import SceneData
 import random
 import math
 
 
-class HostileBalls:
-    spawn_radius = math.sqrt(game_screen.GameData.main_camera.size ** 2 + (
-                game_screen.GameData.main_camera.size * game_screen.GameData.main_camera.hw_ratio) ** 2) * 0.5 + 1
-    balls_speed = 4
+class HostileBallsSpawner:
+    spawn_radius = math.sqrt(SceneData.main_camera.size ** 2 + (
+                SceneData.main_camera.size * SceneData.main_camera.hw_ratio) ** 2) * 0.5 + 1
 
-    def __init__(self, amount):
+    def __init__(self, scene, amount, balls_speed=4):
         self.hostile_balls = []
-        self.cam = game_screen.GameData.main_camera
+        self.cam = SceneData.main_camera
+        self.balls_speed = balls_speed
+        self.scene = scene
         i = 0
         while i < amount:
             new_ball = Ball(Vec2D(0, 0), .5)
-            new_ball.set_color(1, 0, 0, 1)
+            new_ball.set_color(.8, 0, 0, 1)
             self.hostile_balls.append(new_ball)
             i += 1
         self.set_position()
@@ -35,9 +36,9 @@ class HostileBalls:
                     balls_to_remove.add(self.hostile_balls[i])
         # detect balls spawned on already existing balls
         for ball in self.hostile_balls:
-            for k in range(len(game_screen.GameData.balls)):
-                len_between_vectors = ball.body.pos.dist(game_screen.GameData.balls[k].body.pos)
-                if len_between_vectors < ball.body.rad + game_screen.GameData.balls[k].body.rad:
+            for k in range(len(self.scene.data.balls)):
+                len_between_vectors = ball.body.pos.dist(self.scene.data.balls[k].body.pos)
+                if len_between_vectors < ball.body.rad + self.scene.data.balls[k].body.rad:
                     balls_to_remove.add(ball)
         # remove balls
         for ball in balls_to_remove:

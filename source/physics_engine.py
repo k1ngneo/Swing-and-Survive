@@ -9,14 +9,14 @@ class PhysicsEngine:
     GRAVITY_CONST = 100.0
     GRAVITY_DIR = Vec2D(0.0, -1.0)
 
-    def __init__(self):
-        from game_screen import GameData
+    def __init__(self, scene):
         self.__bodies = []
-
-        self.player = GameData.player
-        self.control_ball = GameData.player.control_ball.body
-        self.swing_ball = GameData.player.swinging_ball.body
-        self.swing_range = GameData.player.swing_range
+        self.player = scene.player
+        self.control_ball = None
+        if scene.player:
+            self.control_ball = scene.player.control_ball.body
+            self.swing_ball = scene.player.swinging_ball.body
+            self.swing_range = scene.player.swing_range
 
     def add_body(self, new_body: Ball.Body):
         self.__bodies.append(new_body)
@@ -25,32 +25,33 @@ class PhysicsEngine:
         self.__bodies.remove(body)
 
     def update(self, dt: float):
-        self.calculate_forces(dt)
+        self.calculate_forces()
         self.update_velocities(dt)
         self.handle_collisions()
         self.advance_bodies(dt)
 
     def advance_bodies(self, dt: float):
         for body in self.__bodies:
-            body.pos += dt * body.vel
+            if body is not self.control_ball:
+                body.pos += dt * body.vel
             if body.is_drag_affected:
                 body.vel -= body.vel * dt * 0.7
 
-    def calculate_forces(self, dt: float):
+    def calculate_forces(self):
         # gravity
         for body in self.__bodies:
             body.force = Vec2D(0.0, 0.0)
             if body.is_gravity_affected is True:
                 body.force += PhysicsEngine.GRAVITY_CONST * PhysicsEngine.GRAVITY_DIR
-
-        # swing ball - string pull force
-        if self.swing_ball.pos.dist(self.control_ball.pos) >= self.swing_range:
-            swing_to_control = self.control_ball.pos - self.swing_ball.pos
-            pull_dir = swing_to_control.normalize()
-            string_tensity_sq = math.pow(swing_to_control.length() - self.swing_range, 2)
-            pull_force_s = PhysicsEngine.GRAVITY_CONST * (1.0 + string_tensity_sq)
-            pull_force = pull_dir * pull_force_s
-            self.swing_ball.force += pull_force
+        if self.player:
+            # swing ball - string pull force
+            if self.swing_ball.pos.dist(self.control_ball.pos) >= self.swing_range:
+                swing_to_control = self.control_ball.pos - self.swing_ball.pos
+                pull_dir = swing_to_control.normalize()
+                string_tensity_sq = math.pow(swing_to_control.length() - self.swing_range, 2)
+                pull_force_s = PhysicsEngine.GRAVITY_CONST * (1.0 + string_tensity_sq)
+                pull_force = pull_dir * pull_force_s
+                self.swing_ball.force += pull_force
 
     def update_velocities(self, dt: float):
         for body in self.__bodies:
