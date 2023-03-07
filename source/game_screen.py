@@ -20,7 +20,7 @@ class GameScreen(Screen):
 
         with self.canvas:
             Color(0.1, 0.1, 0.1, 1.0)
-            self.line = Line(points=[], width=1.5)
+            #self.line = Line(points=[], width=1.5)
 
         self.scene.add_player()
         Clock.schedule_interval(self.update, 1.0 / 120.0)
@@ -37,3 +37,7 @@ class GameScreen(Screen):
 
     def on_touch_move(self, touch):
         self.scene.on_touch_move(touch)
+
+    def restart(self):
+        self.scene.clear_scene()
+        self.scene.add_player()

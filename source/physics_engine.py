@@ -11,11 +11,11 @@ class PhysicsEngine:
 
     def __init__(self, scene):
         self.__bodies = []
-        self.player = scene.player
-        if scene.player:
-            self.control_ball = scene.player.control_ball.body
-            self.swing_ball = scene.player.swinging_ball.body
-            self.swing_range = scene.player.swing_range
+        self.player = scene.data.player
+        if scene.data.player:
+            self.control_ball = scene.data.player.control_ball.body
+            self.swing_ball = scene.data.player.swinging_ball.body
+            self.swing_range = scene.data.player.swing_range
 
     def add_body(self, new_body: Ball.Body):
         self.__bodies.append(new_body)
@@ -102,3 +102,9 @@ class PhysicsEngine:
                             Scene.current_scene.on_player_hit()
 
                 change_velocities(i, j)
+
+    def clear(self):
+        self.__bodies.clear()
+        self.player = None
+        self.control_ball = None
+        self.swing_ball = None

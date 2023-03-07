@@ -22,9 +22,6 @@ class SettingsScreen(Screen):
 class SummaryScreen(Screen):
     pass
 
-class Background(Widget):
-    pass
-
 class MenuScreen(Screen):
     __ball_spawn_dt = 0.0
     scene_widget = ObjectProperty(Widget())
