@@ -20,6 +20,7 @@ class Scene:
         self.parent_widget = parent
         self.__ball_spawn_dt = 0.0
         self.__last_touch = 0
+        self.__dt = 0.0
 
 
     def add_player(self):
@@ -54,16 +55,17 @@ class Scene:
         for ball in self.data.balls:
             distance = ball.body.pos.dist(self.data.main_camera.pos)
             if distance > HostileBallsSpawner.spawn_radius + ball.body.rad:
-                if self.data.player is not None and ball is not self.data.player.swinging_ball:
+                if self.data.player and ball is not self.data.player.swinging_ball:
                     self.remove_ball(ball)
 
     def update(self, dt):
+        self.__dt = dt
         if dt > 0.2:
             dt = 0.2
 
         if self.data.player:
             self.data.player.update()
-            #self.parent_widget.line.points = self.data.player.line_widget.line.points
+            self.parent_widget.line.points = self.data.player.line_widget.line.points
 
         self.despawn_balls_check()
         self.engine.update(dt)
@@ -81,6 +83,10 @@ class Scene:
 
     def on_touch_down(self, touch):
         self.__last_touch = touch.spos
+
+    def on_touch_up(self, touch):
+        if self.data.player:
+            self.data.player.control_ball.body.vel = Vec2D(0.0, 0.0)
 
     def on_touch_move(self, touch):
         if self.data.player:
@@ -105,7 +111,7 @@ class Scene:
                 new_pos.y = camera.pos.y - 0.5 * camera.size * camera.hw_ratio + ball.rad
 
             delta_pos = new_pos - ball.pos
-            self.data.player.move(delta_pos)
+            self.data.player.move(delta_pos, self.__dt)
             self.__last_touch = touch.spos
 
     def clear_scene(self):

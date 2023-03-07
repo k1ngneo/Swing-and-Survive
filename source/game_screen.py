@@ -1,5 +1,4 @@
 from kivy.clock import Clock
-from kivy.core.window import Window
 from kivy.graphics import *
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.screenmanager import Screen
@@ -20,7 +19,7 @@ class GameScreen(Screen):
 
         with self.canvas:
             Color(0.1, 0.1, 0.1, 1.0)
-            #self.line = Line(points=[], width=1.5)
+            self.line = Line(points=[], width=1.5)
 
         self.scene.add_player()
         Clock.schedule_interval(self.update, 1.0 / 120.0)
@@ -34,6 +33,9 @@ class GameScreen(Screen):
 
     def on_touch_down(self, touch):
         self.scene.on_touch_down(touch)
+
+    def on_touch_up(self, touch):
+        self.scene.on_touch_up(touch)
 
     def on_touch_move(self, touch):
         self.scene.on_touch_move(touch)

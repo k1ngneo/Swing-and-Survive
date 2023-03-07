@@ -19,10 +19,9 @@ class LineWidget(Widget):
 
 class Player:
     def __init__(self):
-        self.d_pos = Vec2D()
         self.control_ball = Ball(Vec2D(0.0, 0.0), 0.5)
         self.control_ball.set_color(0.1, 0.1, 0.1, 1.0)
-        self.control_ball.body.mass = 10000000
+        self.control_ball.body.mass = 20
 
         self.swing_range = 4.0
         self.swinging_ball = Ball(Vec2D(-4.0, 0.0), 1.0)
@@ -32,9 +31,9 @@ class Player:
 
         self.line_widget = LineWidget()
 
-    def move(self, vector: Vec2D):
-        self.d_pos = vector
-        self.control_ball.body.pos += self.d_pos
+    def move(self, delta_pos: Vec2D, dt=1):
+        self.control_ball.body.pos += delta_pos
+        self.control_ball.body.vel = delta_pos / dt
 
     def update(self):
         from scene_data import SceneData
