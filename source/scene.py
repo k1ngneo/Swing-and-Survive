@@ -27,6 +27,8 @@ class Scene:
         self.data.player = Player()
         self.add_ball(self.data.player.control_ball)
         self.add_ball(self.data.player.swinging_ball)
+        self.parent_widget.add_widget(self.data.player.line_widget)
+        print(self.data.player.line_widget.line.points)
         self.engine.player = self.data.player
         self.engine.control_ball = self.data.player.control_ball.body
         self.engine.swing_ball = self.data.player.swinging_ball.body
@@ -63,12 +65,12 @@ class Scene:
         if dt > 0.2:
             dt = 0.2
 
-        if self.data.player:
-            self.data.player.update()
-            self.parent_widget.line.points = self.data.player.line_widget.line.points
-
         self.despawn_balls_check()
         self.engine.update(dt)
+
+        if self.data.player:
+            self.data.player.update()
+
         self.__ball_spawn_dt += dt
         if self.__ball_spawn_dt >= self.data.ball_spawn_interval:
             self.__ball_spawn_dt -= self.data.ball_spawn_interval
@@ -117,5 +119,7 @@ class Scene:
     def clear_scene(self):
         for ball in self.data.balls:
             self.parent_widget.remove_widget(ball.get_widget())
+        if self.data.player:
+            self.parent_widget.remove_widget(self.data.player.line_widget)
         self.data.clear()
         self.engine.clear()
