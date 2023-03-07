@@ -17,7 +17,7 @@ class Scene:
         self.parent_widget = parent
         self.__ball_spawn_dt = 0.0
         self.__last_touch = 0.0
-        self.dt = 0.0
+        self.__dt = 0.0
 
     def add_player(self):
         self.player = Player()
