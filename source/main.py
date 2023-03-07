@@ -74,7 +74,17 @@ class SettingsScreen(Screen):
         self.manager.current = 'menu'
 
 class SummaryScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(SummaryScreen, self).__init__(**kwargs)
+        restart_button = Button(text='Play Again', pos_hint={'x': 0.5, 'y': 0.2})
+        restart_button.color = (0.1, 0.1, 0.1, 1)
+        restart_button.background_color = (0, 0, 0, 0)
+        restart_button.bind(on_press=self.restart)
+        self.ids.grid.add_widget(restart_button)
+    def restart(self, instance):
+        self.manager.get_screen('game').scene.data.score = 0.0
+        self.manager.get_screen('game').scene.add_player()
+        self.manager.current = 'game'
 
 class MenuScreen(Screen):
     __ball_spawn_dt = 0.0
@@ -95,6 +105,7 @@ class MenuScreen(Screen):
 
 
 class BallCrushApp(App):
+
     def build(self):
         # Create the screen manager
         sm = ScreenManager(transition=FadeTransition())

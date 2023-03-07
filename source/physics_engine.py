@@ -11,6 +11,7 @@ class PhysicsEngine:
 
     def __init__(self, scene):
         self.__bodies = []
+        self.scene = scene
         self.player = scene.data.player
         self.control_ball = None
         if scene.data.player:
@@ -100,8 +101,9 @@ class PhysicsEngine:
                 if self.player:
                     if i is self.control_ball or j is self.control_ball:
                         if not (i is self.swing_ball or j is self.swing_ball):
-                            from scene import Scene
-                            Scene.current_scene.on_player_hit()
+                            self.scene.on_player_hit()
+                    if i is self.swing_ball or j is self.swing_ball:
+                        self.scene.data.score += 10.0
 
                 change_velocities(i, j)
 

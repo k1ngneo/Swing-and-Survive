@@ -14,7 +14,6 @@ class LineWidget(Widget):
         self.color = (0.1, 0.1, 0.1, 1.0)
 
         with self.canvas:
-            from scene_data import SceneData
             Color(self.color[0], self.color[1], self.color[2], self.color[3])
             self.line = Line(points=(0.0, 0.0, 100, 100), width=self.width)
 

@@ -1,6 +1,5 @@
 from kivy.clock import Clock
-from kivy.graphics import *
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 
@@ -10,7 +9,6 @@ from scene import Scene
 class GameScreen(Screen):
     __ball_spawn_dt = 0.0
     scene_widget = ObjectProperty(Widget())
-    score_txt = StringProperty('Score: 10')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -26,6 +24,7 @@ class GameScreen(Screen):
     def update(self, dt):
         if self.manager.current == 'game':
             self.scene.update(dt)
+            self.ids.score.text = f'Score: {int(self.scene.data.score)}'
 
     def on_touch_down(self, touch):
         self.scene.on_touch_down(touch)
@@ -35,7 +34,3 @@ class GameScreen(Screen):
 
     def on_touch_move(self, touch):
         self.scene.on_touch_move(touch)
-
-    def restart(self):
-        self.scene.clear_scene()
-        self.scene.add_player()

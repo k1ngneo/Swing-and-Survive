@@ -8,12 +8,8 @@ from vector import Vec2D
 
 
 class Scene:
-    current_scene = None
-
     def __init__(self, parent):
         from scene_data import SceneData
-
-        Scene.current_scene = self
 
         self.data = SceneData()
         self.engine = PhysicsEngine(self)
@@ -28,7 +24,6 @@ class Scene:
         self.add_ball(self.data.player.control_ball)
         self.add_ball(self.data.player.swinging_ball)
         self.parent_widget.add_widget(self.data.player.line_widget)
-        print(self.data.player.line_widget.line.points)
         self.engine.player = self.data.player
         self.engine.control_ball = self.data.player.control_ball.body
         self.engine.swing_ball = self.data.player.swinging_ball.body
@@ -65,6 +60,8 @@ class Scene:
         if dt > 0.2:
             dt = 0.2
 
+        self.data.score += dt
+
         self.despawn_balls_check()
         self.engine.update(dt)
 
@@ -80,8 +77,10 @@ class Scene:
             ball.update()
 
     def on_player_hit(self):
+        summary_screen = self.parent_widget.manager.get_screen('summary')
         self.clear_scene()
         self.parent_widget.manager.current = 'summary'
+        summary_screen.ids.sc.text = f'Score: {int(self.data.score)}'
 
     def on_touch_down(self, touch):
         self.__last_touch = touch.spos
