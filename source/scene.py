@@ -18,7 +18,6 @@ class Scene:
         self.__last_touch = 0
         self.__dt = 0.0
 
-
     def add_player(self):
         self.data.player = Player()
         self.add_ball(self.data.player.control_ball)

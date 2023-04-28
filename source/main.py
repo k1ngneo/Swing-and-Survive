@@ -1,4 +1,4 @@
-__version__ = "0.1"
+__version__ = "0.2"
 
 from kivy.app import App
 from kivy.config import Config, ConfigParser
@@ -22,7 +22,6 @@ Config.write()
 
 
 class SettingsScreen(Screen):
-
     def __init__(self, **kwargs):
         super(SettingsScreen, self).__init__(**kwargs)
         self.conf = ConfigParser()
@@ -120,7 +119,6 @@ class MenuScreen(Screen):
 
 
 class BallCrushApp(App):
-
     def build(self):
         # Create the screen manager
         sm = ScreenManager(transition=FadeTransition())
@@ -133,3 +131,4 @@ class BallCrushApp(App):
 
 if __name__ == '__main__':
     BallCrushApp().run()
+
