@@ -52,8 +52,10 @@ class Scene:
         for ball in self.data.balls:
             distance = ball.body.pos.dist(self.data.main_camera.pos)
             if distance > HostileBallsSpawner.spawn_radius + ball.body.rad:
-                if self.data.player and ball is not self.data.player.swinging_ball:
-                    self.remove_ball(ball)
+                if self.data.player and ball is self.data.player.swinging_ball:
+                    continue
+                
+                self.remove_ball(ball)
 
     def update(self, dt):
         self.__dt = dt
@@ -122,3 +124,4 @@ class Scene:
             self.parent_widget.remove_widget(self.data.player.line_widget)
         self.data.clear()
         self.engine.clear()
+
