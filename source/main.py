@@ -11,6 +11,8 @@ from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.settings import SettingsWithNoMenu
 from kivy.uix.widget import Widget
 
+import os
+
 from game_screen import GameScreen
 from scene import Scene
 from user_interface import *
@@ -39,6 +41,7 @@ class SettingsScreen(Screen):
         settings_layout.add_widget(settings)
 
         # Add the sound and music configuration option
+        """
         settings.add_json_panel('Settings', self.conf, data='''
                 [
                     {
@@ -57,6 +60,7 @@ class SettingsScreen(Screen):
                     }
                 ]
                 ''')
+        """
 
         # Add a back button
         back_button = HoverButton(text='Save', pos_hint={'x': 0.3, 'y': 0.05})
