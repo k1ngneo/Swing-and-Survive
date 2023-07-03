@@ -56,6 +56,14 @@ SettingsScreen:
                 center_y: self.parent.center_y
                 size: self.parent.size
 
+        Label:
+            id: best_score_label
+            pos_hint: {'center_y': 0.3, 'center_x': 0.5}
+            text: f'Best score: {int(root.score)}'
+            color: 0.1, 0.1, 0.1, 1
+            font_size: "20sp"
+
+
 <GameScreen>:
     name: 'game'
     canvas.before:
