@@ -1,5 +1,7 @@
 __version__ = "0.2"
 
+import os
+
 from kivy.app import App
 from kivy.config import Config, ConfigParser
 from kivy.core.window import Window
@@ -76,6 +78,7 @@ class SettingsScreen(Screen):
     def go_back(self, instance):
         self.manager.current = 'menu'
 
+
 class SummaryScreen(Screen):
     def __init__(self, **kwargs):
         super(SummaryScreen, self).__init__(**kwargs)
@@ -104,9 +107,11 @@ class SummaryScreen(Screen):
         self.manager.get_screen('game').scene.add_player()
         self.manager.current = 'menu'
 
+
 class MenuScreen(Screen):
     __ball_spawn_dt = 0.0
     scene_widget = ObjectProperty(Widget())
+    score = NumericProperty(0)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -114,12 +119,20 @@ class MenuScreen(Screen):
         self.scene = Scene(self.scene_widget)
         Clock.schedule_interval(self.update, 1.0 / 120.0)
 
+        self.ids.best_score_label.text = f'Best score: {int(self.score)}'
+
     def on_size(self, *args):
         self.scene.data.main_camera.update()
 
     def update(self, dt):
         if self.manager.current == 'menu':
             self.scene.update(dt)
+
+    def on_pre_enter(self):
+        filename = "score.txt"
+        if os.path.exists(filename):
+            with open(filename, "r") as file:
+                self.score = float(file.read())
 
 
 class BallCrushApp(App):
@@ -135,4 +148,3 @@ class BallCrushApp(App):
 
 if __name__ == '__main__':
     BallCrushApp().run()
-

@@ -1,3 +1,5 @@
+import os
+
 from kivy.graphics import *
 
 from ball import Ball
@@ -53,7 +55,7 @@ class Scene:
             if distance > HostileBallsSpawner.spawn_radius + ball.body.rad:
                 if self.data.player and ball is self.data.player.swinging_ball:
                     continue
-                
+
                 self.remove_ball(ball)
 
     def update(self, dt):
@@ -78,6 +80,7 @@ class Scene:
             ball.update()
 
     def on_player_hit(self):
+        store_score(self.data.score)
         summary_screen = self.parent_widget.manager.get_screen('summary')
         self.clear_scene()
         self.parent_widget.manager.current = 'summary'
@@ -124,3 +127,15 @@ class Scene:
         self.data.clear()
         self.engine.clear()
 
+
+def store_score(score):
+    filename = "score.txt"
+    if not os.path.exists(filename):
+        with open(filename, "w") as file:
+            file.write(str(score))
+    else:
+        with open(filename, "r") as file:
+            existing_score = float(file.read())
+        if score > existing_score:
+            with open(filename, "w") as file:
+                file.write(str(score))
