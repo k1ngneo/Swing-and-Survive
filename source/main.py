@@ -111,7 +111,6 @@ class MenuScreen(Screen):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.on_pre_enter()
 
         self.scene = Scene(self.scene_widget)
         Clock.schedule_interval(self.update, 1.0 / 120.0)
