@@ -14,8 +14,6 @@ from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.settings import SettingsWithNoMenu
 from kivy.uix.widget import Widget
 
-import os
-
 from game_screen import GameScreen
 from scene import Scene
 from user_interface import *
@@ -25,11 +23,10 @@ Config.set('graphics', 'width', '300')
 Config.set('graphics', 'height', '550')
 Config.write()
 
-main_sound_path = os.path.join(os.getcwd(), 'source', 'assets', 'sounds')
-button_click_sound = os.path.join(main_sound_path, 'button_click.mp3')
-end_game_sound = os.path.join(main_sound_path, 'failure_arcade_alert.mp3')
-menu_theme = os.path.join(main_sound_path, 'upbeat_funk.mp3')
-
+main_sound_path = os.path.join(os.getcwd(),'source', 'assets', 'sounds')
+button_click_sound = os.path.join(main_sound_path, 'button_click.wav')
+end_game_sound = os.path.join(main_sound_path, 'failure_arcade_alert.wav')
+menu_theme = os.path.join(main_sound_path, 'upbeat_funk.wav')
 
 class SettingsScreen(Screen):
     def __init__(self, **kwargs):
