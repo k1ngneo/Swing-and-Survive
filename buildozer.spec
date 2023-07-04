@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = 'Swing & Survive'
+title = Swing And Survive
 
 # (str) Package name
 package.name = swingandsurvive
@@ -16,7 +16,7 @@ source.dir = source
 source.include_exts = py,png,jpg,kv,atlas,ini
 
 # (list) List of inclusions using pattern matching
-source.include_patterns = images/*.png,images/*.jpg
+#source.include_patterns = assets/images/*.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -47,7 +47,7 @@ requirements = python3,kivy,kivymd
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = icon.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
