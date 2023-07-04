@@ -1,9 +1,15 @@
+import os
+
 from kivy.clock import Clock
+from kivy.core.audio import SoundLoader
 from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 
 from scene import Scene
+
+main_sound_path = os.path.join(os.getcwd(), 'source', 'assets', 'sounds')
+menu_theme = os.path.join(os.getcwd(), main_sound_path, 'upbeat_funk.mp3')
 
 
 class GameScreen(Screen):
@@ -14,6 +20,7 @@ class GameScreen(Screen):
         super().__init__(**kwargs)
 
         self.scene = Scene(self)
+        self.theme_sound = SoundLoader.load(menu_theme)
 
         self.scene.add_player()
         Clock.schedule_interval(self.update, 1.0 / 120.0)
@@ -34,3 +41,10 @@ class GameScreen(Screen):
 
     def on_touch_move(self, touch):
         self.scene.on_touch_move(touch)
+
+    def on_enter(self):
+        self.theme_sound.volume = 0.3
+        self.theme_sound.play()
+
+    def on_leave(self):
+        self.theme_sound.stop()
