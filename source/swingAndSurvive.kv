@@ -7,7 +7,7 @@ SettingsScreen:
     name: 'menu'
     canvas.before:
         Color:
-            rgba: (0.1, 0.3, 0.3, 1)
+            rgba: (0, 0.78, 0.71, 1)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -16,11 +16,10 @@ SettingsScreen:
     FloatLayout:
         id: scene_widget
     FloatLayout:
-        Label:
+        Image:
+            source: 'images/game_logo.png'
             pos_hint: {'center_y': 0.75, 'center_x': 0.5}
-            text: "BALL CRUSH"
-            color: 0.1, 0.1, 0.1, 1
-            font_size: "40sp"
+            size: self.parent.size
         TapButton:
             size_hint: 1, .35
             color: 0.1, 0.1, 0.1, 1
@@ -68,7 +67,7 @@ SettingsScreen:
     name: 'game'
     canvas.before:
         Color:
-            rgba: (0.1, 0.3, 0.3, 1)
+            rgba: (0, 0.78, 0.71, 1)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -88,7 +87,7 @@ SettingsScreen:
     name: 'summary'
     canvas.before:
         Color:
-            rgba: (0.1, 0.3, 0.3, 1)
+            rgba: (0, 0.78, 0.71, 1)
         Rectangle:
             pos: self.pos
             size: self.size

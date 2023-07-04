@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = Ball Crush
+title = 'Swing & Survive'
 
 # (str) Package name
-package.name = ballcrush
+package.name = swingandsurvive
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.sgentertainment

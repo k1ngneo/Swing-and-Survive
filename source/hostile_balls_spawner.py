@@ -17,7 +17,7 @@ class HostileBallsSpawner:
         i = 0
         while i < amount:
             new_ball = Ball(Vec2D(0, 0), .5)
-            new_ball.set_color(.8, 0, 0, 1)
+            new_ball.set_color(.29, 0.05, 0.11, 1)
             self.hostile_balls.append(new_ball)
             i += 1
         self.set_position()

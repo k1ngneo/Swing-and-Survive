@@ -1,4 +1,4 @@
-__version__ = "0.2"
+__version__ = "0.3"
 
 import os
 
@@ -135,7 +135,7 @@ class MenuScreen(Screen):
                 self.score = float(file.read())
 
 
-class BallCrushApp(App):
+class SwingAndSurviveApp(App):
     def build(self):
         # Create the screen manager
         sm = ScreenManager(transition=FadeTransition())
@@ -147,4 +147,4 @@ class BallCrushApp(App):
 
 
 if __name__ == '__main__':
-    BallCrushApp().run()
+    SwingAndSurviveApp().run()
