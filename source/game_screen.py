@@ -44,6 +44,7 @@ class GameScreen(Screen):
 
     def on_enter(self):
         self.theme_sound.volume = 0.3
+        self.theme_sound.loop = True
         self.theme_sound.play()
 
     def on_leave(self):
