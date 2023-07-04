@@ -26,9 +26,9 @@ Config.set('graphics', 'height', '550')
 Config.write()
 
 main_sound_path = os.path.join(os.getcwd(), 'source', 'assets', 'sounds')
-button_click_sound = os.path.join(os.getcwd(), main_sound_path, 'button_click.mp3')
-end_game_sound = os.path.join(os.getcwd(), main_sound_path, 'failure_arcade_alert.mp3')
-menu_theme = os.path.join(os.getcwd(), main_sound_path, 'upbeat_funk.mp3')
+button_click_sound = os.path.join(main_sound_path, 'button_click.mp3')
+end_game_sound = os.path.join(main_sound_path, 'failure_arcade_alert.mp3')
+menu_theme = os.path.join(main_sound_path, 'upbeat_funk.mp3')
 
 
 class SettingsScreen(Screen):

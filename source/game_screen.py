@@ -9,7 +9,7 @@ from kivy.uix.widget import Widget
 from scene import Scene
 
 main_sound_path = os.path.join(os.getcwd(), 'source', 'assets', 'sounds')
-menu_theme = os.path.join(os.getcwd(), main_sound_path, 'upbeat_funk.mp3')
+menu_theme = os.path.join(main_sound_path, 'upbeat_funk.mp3')
 
 
 class GameScreen(Screen):
