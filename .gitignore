@@ -2,4 +2,4 @@
 **bin
 **.buildozer
 .idea
-source/score.txt
+score.txt
