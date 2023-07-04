@@ -27,6 +27,7 @@ SettingsScreen:
             pos_hint: {'center_y': 0.4, 'center_x': 0.5}
             text: 'Tap to play'
             on_press:
+                root.play_click_sound()
                 root.manager.current = 'game'
             canvas.before:
                 PushMatrix:
@@ -41,7 +42,9 @@ SettingsScreen:
             size_hint: .15, .12
             pos_hint: {'center_y': 0.10, 'center_x': 0.15}
             background_color: 1, 1, 1, 0
-            on_press: root.manager.current = 'settings'
+            on_press:
+                root.play_click_sound()
+                root.manager.current = 'settings'
             canvas.before:
                 PushMatrix
                 Rotate:

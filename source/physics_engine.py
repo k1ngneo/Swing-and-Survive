@@ -1,8 +1,13 @@
 import math
+import os
 from itertools import combinations
+
+from kivy.core.audio import SoundLoader
 
 from ball import Ball
 from vector import Vec2D
+
+sound_path = os.path.join(os.getcwd(), 'source', 'assets', 'sounds', 'game_ball_tap.mp3')
 
 
 class PhysicsEngine:
@@ -14,6 +19,7 @@ class PhysicsEngine:
         self.scene = scene
         self.player = scene.data.player
         self.control_ball = None
+        self.sound = SoundLoader.load(sound_path)
         if scene.data.player:
             self.control_ball = scene.data.player.control_ball.body
             self.swing_ball = scene.data.player.swinging_ball.body
@@ -98,7 +104,9 @@ class PhysicsEngine:
         pairs = combinations(self.__bodies, 2)
         for i, j in pairs:
             if i.overlaps(j):
+                self.sound.play()
                 if self.player:
+                    self.sound.play()
                     if i is self.control_ball or j is self.control_ball:
                         if not (i is self.swing_ball or j is self.swing_ball):
                             self.scene.on_player_hit()
