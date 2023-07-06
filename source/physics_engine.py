@@ -1,8 +1,13 @@
 import math
+import os
 from itertools import combinations
+
+from kivy.core.audio import SoundLoader
 
 from ball import Ball
 from vector import Vec2D
+
+sound_path = os.path.join(os.getcwd(), 'source', 'assets', 'sounds', 'game_ball_tap.wav')
 
 
 class PhysicsEngine:
@@ -11,12 +16,14 @@ class PhysicsEngine:
 
     def __init__(self, scene):
         self.__bodies = []
-        self.player = scene.player
+        self.scene = scene
+        self.player = scene.data.player
         self.control_ball = None
-        if scene.player:
-            self.control_ball = scene.player.control_ball.body
-            self.swing_ball = scene.player.swinging_ball.body
-            self.swing_range = scene.player.swing_range
+        self.sound = SoundLoader.load(sound_path)
+        if scene.data.player:
+            self.control_ball = scene.data.player.control_ball.body
+            self.swing_ball = scene.data.player.swinging_ball.body
+            self.swing_range = scene.data.player.swing_range
 
     def add_body(self, new_body: Ball.Body):
         self.__bodies.append(new_body)
@@ -97,4 +104,19 @@ class PhysicsEngine:
         pairs = combinations(self.__bodies, 2)
         for i, j in pairs:
             if i.overlaps(j):
+                self.sound.play()
+                if self.player:
+                    self.sound.play()
+                    if i is self.control_ball or j is self.control_ball:
+                        if not (i is self.swing_ball or j is self.swing_ball):
+                            self.scene.on_player_hit()
+                    if i is self.swing_ball or j is self.swing_ball:
+                        self.scene.data.score += 10.0
+
                 change_velocities(i, j)
+
+    def clear(self):
+        self.__bodies.clear()
+        self.player = None
+        self.control_ball = None
+        self.swing_ball = None

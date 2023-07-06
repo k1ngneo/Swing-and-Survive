@@ -1,6 +1,6 @@
 from kivy.animation import Animation
-from kivy.clock import Clock
 from kivy.properties import NumericProperty
+from kivy.clock import Clock
 from kivy.uix.button import Button
 from kivymd.uix.behaviors import HoverBehavior
 
