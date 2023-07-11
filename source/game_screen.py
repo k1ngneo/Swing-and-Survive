@@ -8,7 +8,7 @@ from kivy.uix.widget import Widget
 
 from scene import Scene
 
-main_sound_path = os.path.join(os.getcwd(), 'source', 'assets', 'sounds')
+main_sound_path = os.path.join(os.getcwd(), 'assets', 'sounds')
 menu_theme = os.path.join(main_sound_path, 'upbeat_funk.wav')
 
 

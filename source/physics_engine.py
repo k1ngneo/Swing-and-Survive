@@ -7,7 +7,7 @@ from kivy.core.audio import SoundLoader
 from ball import Ball
 from vector import Vec2D
 
-sound_path = os.path.join(os.getcwd(), 'source', 'assets', 'sounds', 'game_ball_tap.wav')
+sound_path = os.path.join(os.getcwd(), 'assets', 'sounds', 'game_ball_tap.wav')
 
 
 class PhysicsEngine:

@@ -23,7 +23,7 @@ Config.set('graphics', 'width', '300')
 Config.set('graphics', 'height', '550')
 Config.write()
 
-main_sound_path = os.path.join(os.getcwd(),'source', 'assets', 'sounds')
+main_sound_path = os.path.join(os.getcwd(), 'assets', 'sounds')
 button_click_sound = os.path.join(main_sound_path, 'button_click.wav')
 end_game_sound = os.path.join(main_sound_path, 'failure_arcade_alert.wav')
 menu_theme = os.path.join(main_sound_path, 'upbeat_funk.wav')
