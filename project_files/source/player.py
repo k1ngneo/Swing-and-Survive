@@ -37,7 +37,7 @@ class Player:
         self.control_ball.body.vel = delta_pos / dt
 
     def update(self):
-        from scene_data import SceneData
+        from source.scene_data import SceneData
         screen_size = Vec2D(Window.size[0], Window.size[1])
         line_pos1 = SceneData.main_camera.world_to_clip(self.control_ball.body.pos) * screen_size
         line_pos2 = SceneData.main_camera.world_to_clip(self.swinging_ball.body.pos) * screen_size
