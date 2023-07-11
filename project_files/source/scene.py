@@ -2,16 +2,16 @@ import os
 
 from kivy.graphics import *
 
-from ball import Ball
-from hostile_balls_spawner import HostileBallsSpawner
-from physics_engine import PhysicsEngine
-from player import Player
-from vector import Vec2D
+from source.ball import Ball
+from source.hostile_balls_spawner import HostileBallsSpawner
+from source.physics_engine import PhysicsEngine
+from source.player import Player
+from source.vector import Vec2D
 
 
 class Scene:
     def __init__(self, parent):
-        from scene_data import SceneData
+        from source.scene_data import SceneData
 
         self.data = SceneData()
         self.engine = PhysicsEngine(self)

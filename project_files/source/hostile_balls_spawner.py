@@ -1,6 +1,6 @@
-from ball import Ball
-from vector import Vec2D
-from scene_data import SceneData
+from source.ball import Ball
+from source.vector import Vec2D
+from source.scene_data import SceneData
 import random
 import math
 

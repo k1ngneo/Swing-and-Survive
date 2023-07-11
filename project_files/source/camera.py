@@ -1,5 +1,5 @@
 from kivy.core.window import Window
-from vector import Vec2D
+from source.vector import Vec2D
 
 '''
     Clip Space

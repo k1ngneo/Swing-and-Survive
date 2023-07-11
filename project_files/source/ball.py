@@ -1,7 +1,7 @@
 from math import pi as PI
 
-from ball_widget import BallWidget
-from vector import Vec2D
+from source.ball_widget import BallWidget
+from source.vector import Vec2D
 
 
 class Ball:
@@ -29,7 +29,7 @@ class Ball:
         self.update()
 
     def update(self):
-        from scene_data import SceneData
+        from source.scene_data import SceneData
         self.__widget.pos = SceneData.main_camera.world_to_clip(self.body.pos).t()
         self.__widget.radius = self.body.rad / SceneData.main_camera.size
         self.__widget.update()

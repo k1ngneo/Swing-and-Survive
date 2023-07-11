@@ -1,5 +1,3 @@
-__version__ = "0.3"
-
 import os
 
 from kivy.app import App
@@ -14,9 +12,9 @@ from kivy.uix.screenmanager import ScreenManager
 from kivy.uix.settings import SettingsWithNoMenu
 from kivy.uix.widget import Widget
 
-from game_screen import GameScreen
-from scene import Scene
-from user_interface import *
+from source.game_screen import GameScreen
+from source.scene import Scene
+from source.user_interface import *
 
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 Config.set('graphics', 'width', '300')
@@ -136,7 +134,7 @@ class MenuScreen(Screen):
         self.scene = Scene(self.scene_widget)
         Clock.schedule_interval(self.update, 1.0 / 120.0)
 
-        self.ids.best_score_label.text = f'Best score: {int(self.score)}'
+        #self.ids.best_score_label.text = f'Best score: {int(self.score)}'
 
     def on_size(self, *args):
         self.scene.data.main_camera.update()
@@ -171,6 +169,3 @@ class SwingAndSurviveApp(App):
         sm.add_widget(SummaryScreen(name='summary'))
         return sm
 
-
-if __name__ == '__main__':
-    SwingAndSurviveApp().run()

@@ -1,5 +1,5 @@
-from camera import Camera
-from vector import Vec2D
+from source.camera import Camera
+from source.vector import Vec2D
 
 
 class SceneData:

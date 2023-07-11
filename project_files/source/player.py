@@ -2,8 +2,8 @@ from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.graphics import *
 
-from vector import Vec2D
-from ball import Ball
+from source.vector import Vec2D
+from source.ball import Ball
 
 
 class LineWidget(Widget):

@@ -4,8 +4,8 @@ from itertools import combinations
 
 from kivy.core.audio import SoundLoader
 
-from ball import Ball
-from vector import Vec2D
+from source.ball import Ball
+from source.vector import Vec2D
 
 sound_path = os.path.join(os.getcwd(), 'assets', 'sounds', 'game_ball_tap.wav')
 
