@@ -26,6 +26,7 @@ button_click_sound = os.path.join(main_sound_path, 'button_click.wav')
 end_game_sound = os.path.join(main_sound_path, 'failure_arcade_alert.wav')
 menu_theme = os.path.join(main_sound_path, 'upbeat_funk.wav')
 
+
 class SettingsScreen(Screen):
     def __init__(self, **kwargs):
         super(SettingsScreen, self).__init__(**kwargs)
@@ -134,8 +135,6 @@ class MenuScreen(Screen):
         self.scene = Scene(self.scene_widget)
         Clock.schedule_interval(self.update, 1.0 / 120.0)
 
-        #self.ids.best_score_label.text = f'Best score: {int(self.score)}'
-
     def on_size(self, *args):
         self.scene.data.main_camera.update()
 
@@ -168,4 +167,3 @@ class SwingAndSurviveApp(App):
         sm.add_widget(GameScreen(name='game'))
         sm.add_widget(SummaryScreen(name='summary'))
         return sm
-
