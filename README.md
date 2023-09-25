@@ -4,7 +4,7 @@ cd project_files/ && python main.py
 ```
 For building the apk package for android run the command below in the terminal:
 ```bash
-buildozer -v android debug:
+buildozer -v android debug
 ```
 To sign app:
 ```bash
